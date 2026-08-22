@@ -41,8 +41,6 @@ systemctl daemon-reload
 systemctl enable --now cloudflare-mesh-forwarding.service
 ```
 
-Before enrolling or changing the Mesh profile, install `ops/cloudflare-mesh-rollback.sh` as `/usr/local/sbin/cloudflare-mesh-rollback` and arm a transient rollback timer. Cancel the timer only after a new SSH session confirms that WARP and `cloudflared` are both healthy.
-
 ## Banana Pi BPI-R4 exporter
 
 On OpenWrt 25.12, install the exporter and collectors used by the BPI dashboard:

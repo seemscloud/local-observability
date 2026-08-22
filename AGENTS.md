@@ -26,7 +26,6 @@ This project defines a portable Docker Compose logging and host-metrics stack fo
 - `config/nginx/` owns the TLS reverse proxies for Grafana and Prometheus and their shared HTTP-to-HTTPS redirect.
 - `.env.faszyn` and `.env.szew` are tracked, non-secret site selectors for the NUC identity, private node_exporter listen address, Grafana domain, and Prometheus domain.
 - `.env` contains the shared Cloudflare token, must use mode `0600`, and must remain ignored by Git.
-- `ops/cloudflare-mesh-rollback.sh` is the timed emergency rollback used before a Mesh enrollment or profile change; it disconnects and disables WARP and restarts `cloudflared`.
 - `ops/cloudflare-mesh-forwarding.sh` and `ops/cloudflare-mesh-forwarding.service` persist the local-LAN routing exception and forwarding rules between the host-installed `CloudflareWARP` interface and the NUC LAN interface.
 
 ## Constraints
