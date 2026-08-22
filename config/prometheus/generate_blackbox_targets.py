@@ -109,9 +109,10 @@ def build_targets() -> list[dict[str, object]]:
                     )
                 )
             for application in ("grafana", "prometheus", "cockpit"):
+                path = "/healthz" if application == "cockpit" else "/"
                 groups.append(
                     target_group(
-                        target=f'https://{destination_config[application]}/',
+                        target=f'https://{destination_config[application]}{path}',
                         module="http_2xx_ipv4",
                         node=destination_config["nuc_node"],
                         service=f"{application}-https",

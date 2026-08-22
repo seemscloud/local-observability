@@ -31,6 +31,13 @@ server {
         proxy_set_header Authorization "Basic Y29tcDp4";
     }
 
+    location = /healthz {
+        proxy_pass http://observability-cockpit:9090/ping;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header Authorization "";
+    }
+
     location / {
         auth_request /_cockpit_login;
         auth_request_set $cockpit_login_cookie $upstream_http_set_cookie;

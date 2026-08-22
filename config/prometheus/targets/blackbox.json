@@ -155,7 +155,7 @@
   },
   {
     "targets": [
-      "https://cockpit.faszyn.lan.bajojajo.com/"
+      "https://cockpit.faszyn.lan.bajojajo.com/healthz"
     ],
     "labels": {
       "module": "http_2xx_ipv4",
@@ -421,7 +421,7 @@
   },
   {
     "targets": [
-      "https://cockpit.szew.lan.bajojajo.com/"
+      "https://cockpit.szew.lan.bajojajo.com/healthz"
     ],
     "labels": {
       "module": "http_2xx_ipv4",
@@ -673,7 +673,7 @@
   },
   {
     "targets": [
-      "https://cockpit.faszyn.lan.bajojajo.com/"
+      "https://cockpit.faszyn.lan.bajojajo.com/healthz"
     ],
     "labels": {
       "module": "http_2xx_ipv4",
@@ -939,7 +939,7 @@
   },
   {
     "targets": [
-      "https://cockpit.szew.lan.bajojajo.com/"
+      "https://cockpit.szew.lan.bajojajo.com/healthz"
     ],
     "labels": {
       "module": "http_2xx_ipv4",
