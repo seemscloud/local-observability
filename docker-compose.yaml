@@ -101,16 +101,20 @@ services:
     container_name: observability-cockpit
     hostname: observability-cockpit
     command:
-      - /container/label-run
+      - /usr/libexec/cockpit-ws
+      - --address=0.0.0.0
+      - --port=9090
       - --no-tls
+      - --local-session=/usr/local/bin/cockpit-host-bridge
     init: true
+    pid: host
+    privileged: true
     restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true
     expose:
       - "9090"
     volumes:
       - ./config/cockpit/cockpit.conf:/etc/cockpit/cockpit.conf:ro
+      - ./ops/cockpit-host-bridge.sh:/usr/local/bin/cockpit-host-bridge:ro
     networks:
       - observability
     logging: *default-logging
