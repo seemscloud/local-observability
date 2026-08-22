@@ -2,7 +2,7 @@
   "annotations": {
     "list": []
   },
-  "description": "One readable Loki log view with a source-type filter for the local NUC and OpenWrt router.",
+  "description": "One readable Loki log view with source-type and case-insensitive text filters for the local NUC and OpenWrt router.",
   "editable": false,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
@@ -44,7 +44,7 @@
           },
           "direction": "backward",
           "editorMode": "code",
-          "expr": "{source=~\"${log_type:regex}\"}",
+          "expr": "{source=~\"${log_type:regex}\"} |~ \"(?i)${search:regex}\"",
           "maxLines": 2000,
           "queryType": "range",
           "refId": "A"
@@ -73,7 +73,7 @@
         "description": "Choose which type of logs to display.",
         "hide": 0,
         "includeAll": true,
-        "label": "Log type",
+        "label": "Type",
         "multi": false,
         "name": "log_type",
         "options": [
@@ -106,6 +106,27 @@
         "query": "OpenWrt : openwrt, NUC : journal, Docker : docker, Host : file",
         "skipUrlSync": false,
         "type": "custom"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "",
+          "value": ""
+        },
+        "description": "Case-insensitive text contained in the log line.",
+        "hide": 0,
+        "label": "Search",
+        "name": "search",
+        "options": [
+          {
+            "selected": true,
+            "text": "",
+            "value": ""
+          }
+        ],
+        "query": "",
+        "skipUrlSync": false,
+        "type": "textbox"
       }
     ]
   },
@@ -117,6 +138,6 @@
   "timezone": "browser",
   "title": "Loki",
   "uid": "loki",
-  "version": 1,
+  "version": 2,
   "weekStart": "monday"
 }

@@ -12,7 +12,7 @@ This project defines a portable Docker Compose logging stack for a NUC. Grafana 
 - `config/loki/config.yaml` owns single-node filesystem storage and 30-day retention.
 - `config/grafana/provisioning/datasources/loki.yaml` provisions Loki as Grafana's default data source.
 - `config/grafana/provisioning/dashboards/loki.yaml` provisions repository-owned dashboards from `config/grafana/dashboards/` at the Grafana root level.
-- `config/grafana/dashboards/loki.json` defines the default `Loki` single-panel log dashboard with an All/OpenWrt/NUC/Docker/Host source-type selector.
+- `config/grafana/dashboards/loki.json` defines the default `Loki` single-panel log dashboard with an All/OpenWrt/NUC/Docker/Host type selector and case-insensitive text search.
 - `config/certbot/manage.py` issues and renews the site-specific certificate with Cloudflare DNS-01 and reloads only Nginx when certificate content changes.
 - `config/nginx/` owns the TLS reverse proxy and HTTP-to-HTTPS redirect.
 - `.env.faszyn` and `.env.szew` are tracked, non-secret site selectors for the NUC identity and Grafana domain.

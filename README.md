@@ -4,7 +4,7 @@ Portable Docker Compose logging stack for the Faszyn or Szew NUC. It runs Grafan
 
 Alloy collects the host systemd journal, current text logs under `/var/log`, and Docker container logs. File collection starts at the end of existing files on first deployment, then persists offsets in the Alloy data volume.
 
-Grafana opens the root-level provisioned **Loki** dashboard by default. A single full-width log panel has a **Log type** filter with `All`, `OpenWrt`, `NUC`, `Docker`, and `Host` choices, plus the dashboard time picker and automatic refresh, so reading logs does not require Explore queries.
+Grafana opens the root-level provisioned **Loki** dashboard by default. A single full-width log panel has a **Type** filter with `All`, `OpenWrt`, `NUC`, `Docker`, and `Host` choices and a case-insensitive **Search** text filter, plus the dashboard time picker and automatic refresh, so reading and searching logs does not require Explore queries.
 
 ## Setup
 
