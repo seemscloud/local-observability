@@ -80,12 +80,14 @@ services:
       GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
       GF_AUTH_BASIC_ENABLED: "false"
       GF_AUTH_DISABLE_LOGIN_FORM: "true"
+      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: /etc/grafana/dashboards/local-logs.json
       GF_SERVER_DOMAIN: ${GRAFANA_DOMAIN:?set GRAFANA_DOMAIN}
       GF_SERVER_ENFORCE_DOMAIN: "true"
       GF_SERVER_ROOT_URL: https://${GRAFANA_DOMAIN:?set GRAFANA_DOMAIN}/
       GF_USERS_ALLOW_SIGN_UP: "false"
     volumes:
       - observability-grafana-data:/var/lib/grafana
+      - ./config/grafana/dashboards:/etc/grafana/dashboards:ro
       - ./config/grafana/provisioning:/etc/grafana/provisioning:ro
     networks:
       - observability
