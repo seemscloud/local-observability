@@ -1,6 +1,6 @@
 {
   "annotations": {"list": []},
-  "description": "Comprehensive network and system metrics for the selected Banana Pi BPI-R4 OpenWrt routers. Every panel uses metrics verified on both current routers.",
+  "description": "Compact three-column historical network and system charts for the selected Banana Pi BPI-R4 OpenWrt routers. Every panel uses metrics verified on both current routers.",
   "editable": false,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
@@ -10,72 +10,71 @@
   "panels": [
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "short"}, "overrides": []},
-      "gridPos": {"h": 4, "w": 3, "x": 0, "y": 0}, "id": 1,
-      "options": {"colorMode": "value", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "value_and_name"},
-      "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "up{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}", "instant": true, "legendFormat": "{{node}}", "range": false, "refId": "A"}],
-      "title": "Status", "type": "stat"
+      "gridPos": {"h": 6, "w": 8, "x": 0, "y": 0}, "id": 1,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "up{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}", "instant": false, "legendFormat": "{{node}}", "range": true, "refId": "A"}],
+      "title": "Status", "type": "timeseries"
     },
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "s"}, "overrides": []},
-      "gridPos": {"h": 4, "w": 3, "x": 3, "y": 0}, "id": 2,
-      "options": {"colorMode": "value", "graphMode": "area", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
-      "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "time() - node_boot_time_seconds{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}", "instant": true, "legendFormat": "Uptime", "range": false, "refId": "A"}],
-      "title": "Uptime", "type": "stat"
+      "gridPos": {"h": 6, "w": 8, "x": 8, "y": 0}, "id": 2,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "time() - node_boot_time_seconds{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}", "instant": false, "legendFormat": "Uptime", "range": true, "refId": "A"}],
+      "title": "Uptime", "type": "timeseries"
     },
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"max": 100, "min": 0, "unit": "percent"}, "overrides": []},
-      "gridPos": {"h": 4, "w": 3, "x": 6, "y": 0}, "id": 3,
-      "options": {"colorMode": "value", "graphMode": "area", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
-      "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "100 - avg(rate(node_cpu_seconds_total{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\",mode=\"idle\"}[$__rate_interval])) * 100", "instant": true, "legendFormat": "CPU", "range": false, "refId": "A"}],
-      "title": "CPU used", "type": "stat"
+      "gridPos": {"h": 6, "w": 8, "x": 16, "y": 0}, "id": 3,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "100 - avg(rate(node_cpu_seconds_total{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\",mode=\"idle\"}[$__rate_interval])) * 100", "instant": false, "legendFormat": "CPU", "range": true, "refId": "A"}],
+      "title": "CPU used", "type": "timeseries"
     },
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"max": 100, "min": 0, "unit": "percent"}, "overrides": []},
-      "gridPos": {"h": 4, "w": 3, "x": 9, "y": 0}, "id": 4,
-      "options": {"colorMode": "value", "graphMode": "area", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
-      "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "100 * (1 - node_memory_MemAvailable_bytes{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"} / node_memory_MemTotal_bytes{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"})", "instant": true, "legendFormat": "RAM", "range": false, "refId": "A"}],
-      "title": "Memory used", "type": "stat"
+      "gridPos": {"h": 6, "w": 8, "x": 0, "y": 6}, "id": 4,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "100 * (1 - node_memory_MemAvailable_bytes{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"} / node_memory_MemTotal_bytes{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"})", "instant": false, "legendFormat": "RAM", "range": true, "refId": "A"}],
+      "title": "Memory used", "type": "timeseries"
     },
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"max": 100, "min": 0, "unit": "percent"}, "overrides": []},
-      "gridPos": {"h": 4, "w": 3, "x": 12, "y": 0}, "id": 5,
-      "options": {"colorMode": "value", "graphMode": "area", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
-      "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "100 * (1 - node_filesystem_avail_bytes{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\",mountpoint=\"/overlay\"} / node_filesystem_size_bytes{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\",mountpoint=\"/overlay\"})", "instant": true, "legendFormat": "/overlay", "range": false, "refId": "A"}],
-      "title": "Overlay filesystem used", "type": "stat"
+      "gridPos": {"h": 6, "w": 8, "x": 8, "y": 6}, "id": 5,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "100 * (1 - node_filesystem_avail_bytes{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\",mountpoint=\"/overlay\"} / node_filesystem_size_bytes{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\",mountpoint=\"/overlay\"})", "instant": false, "legendFormat": "/overlay", "range": true, "refId": "A"}],
+      "title": "Overlay filesystem used", "type": "timeseries"
     },
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "celsius"}, "overrides": []},
-      "gridPos": {"h": 4, "w": 3, "x": 15, "y": 0}, "id": 6,
-      "options": {"colorMode": "value", "graphMode": "area", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
-      "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "max(node_hwmon_temp_celsius{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"})", "instant": true, "legendFormat": "Maximum", "range": false, "refId": "A"}],
-      "title": "Maximum temperature", "type": "stat"
+      "gridPos": {"h": 6, "w": 8, "x": 16, "y": 6}, "id": 6,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "max(node_hwmon_temp_celsius{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"})", "instant": false, "legendFormat": "Maximum", "range": true, "refId": "A"}],
+      "title": "Maximum temperature", "type": "timeseries"
     },
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"max": 100, "min": 0, "unit": "percent"}, "overrides": []},
-      "gridPos": {"h": 4, "w": 3, "x": 18, "y": 0}, "id": 7,
-      "options": {"colorMode": "value", "graphMode": "area", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
-      "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "100 * node_nf_conntrack_entries{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"} / node_nf_conntrack_entries_limit{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}", "instant": true, "legendFormat": "Conntrack", "range": false, "refId": "A"}],
-      "title": "Conntrack used", "type": "stat"
+      "gridPos": {"h": 6, "w": 8, "x": 0, "y": 12}, "id": 7,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "100 * node_nf_conntrack_entries{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"} / node_nf_conntrack_entries_limit{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}", "instant": false, "legendFormat": "Conntrack", "range": true, "refId": "A"}],
+      "title": "Conntrack used", "type": "timeseries"
     },
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "short"}, "overrides": []},
-      "gridPos": {"h": 4, "w": 3, "x": 21, "y": 0}, "id": 8,
-      "options": {"colorMode": "value", "graphMode": "area", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
-      "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "sum(wifi_stations{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"})", "instant": true, "legendFormat": "Clients", "range": false, "refId": "A"}],
-      "title": "Wi-Fi clients", "type": "stat"
+      "gridPos": {"h": 6, "w": 8, "x": 8, "y": 12}, "id": 8,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "sum(wifi_stations{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"})", "instant": false, "legendFormat": "Clients", "range": true, "refId": "A"}],
+      "title": "Wi-Fi clients", "type": "timeseries"
     },
-    {"collapsed": false, "gridPos": {"h": 1, "w": 24, "x": 0, "y": 4}, "id": 100, "panels": [], "title": "Compute and memory", "type": "row"},
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "percent"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 5}, "id": 9,
-      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "gridPos": {"h": 6, "w": 8, "x": 16, "y": 12}, "id": 9,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "avg by (mode) (rate(node_cpu_seconds_total{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}[$__rate_interval])) * 100", "legendFormat": "{{mode}}", "range": true, "refId": "A"}],
       "title": "CPU usage by mode", "type": "timeseries"
     },
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "short"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 5}, "id": 10,
-      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "gridPos": {"h": 6, "w": 8, "x": 0, "y": 18}, "id": 10,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [
         {"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "node_load1{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}", "legendFormat": "1 minute", "range": true, "refId": "A"},
         {"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "node_load5{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}", "legendFormat": "5 minutes", "range": true, "refId": "B"},
@@ -85,15 +84,15 @@
     },
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "percent"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 13}, "id": 11,
-      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "gridPos": {"h": 6, "w": 8, "x": 8, "y": 18}, "id": 11,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "100 * (1 - node_memory_MemAvailable_bytes{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"} / node_memory_MemTotal_bytes{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"})", "legendFormat": "Used", "range": true, "refId": "A"}],
       "title": "Memory utilization", "type": "timeseries"
     },
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "bytes"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 13}, "id": 12,
-      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "gridPos": {"h": 6, "w": 8, "x": 16, "y": 18}, "id": 12,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [
         {"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "node_memory_MemAvailable_bytes{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}", "legendFormat": "Available", "range": true, "refId": "A"},
         {"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "node_memory_Cached_bytes{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}", "legendFormat": "Cached", "range": true, "refId": "B"},
@@ -104,8 +103,8 @@
     },
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "short"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 8, "x": 0, "y": 21}, "id": 13,
-      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "gridPos": {"h": 6, "w": 8, "x": 0, "y": 24}, "id": 13,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [
         {"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "node_procs_running_total{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}", "legendFormat": "Running", "range": true, "refId": "A"},
         {"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "node_procs_blocked_total{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}", "legendFormat": "Blocked", "range": true, "refId": "B"}
@@ -114,8 +113,8 @@
     },
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "ops"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 8, "x": 8, "y": 21}, "id": 14,
-      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "gridPos": {"h": 6, "w": 8, "x": 8, "y": 24}, "id": 14,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [
         {"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "rate(node_context_switches_total{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}[$__rate_interval])", "legendFormat": "Context switches", "range": true, "refId": "A"},
         {"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "rate(node_intr_total{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}[$__rate_interval])", "legendFormat": "Interrupts", "range": true, "refId": "B"},
@@ -125,38 +124,36 @@
     },
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "percent"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 8, "x": 16, "y": 21}, "id": 15,
-      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "gridPos": {"h": 6, "w": 8, "x": 16, "y": 24}, "id": 15,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "100 * node_entropy_available_bits{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"} / node_entropy_pool_size_bits{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}", "legendFormat": "Available", "range": true, "refId": "A"}],
       "title": "Entropy pool", "type": "timeseries"
     },
-    {"collapsed": false, "gridPos": {"h": 1, "w": 24, "x": 0, "y": 29}, "id": 101, "panels": [], "title": "Storage", "type": "row"},
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "percent"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 8, "x": 0, "y": 30}, "id": 16,
-      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "gridPos": {"h": 6, "w": 8, "x": 0, "y": 30}, "id": 16,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "100 * (1 - node_filesystem_avail_bytes{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\",fstype!~\"tmpfs\"} / node_filesystem_size_bytes{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\",fstype!~\"tmpfs\"})", "legendFormat": "{{mountpoint}}", "range": true, "refId": "A"}],
       "title": "Filesystem utilization", "type": "timeseries"
     },
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "bytes"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 8, "x": 8, "y": 30}, "id": 17,
-      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "gridPos": {"h": 6, "w": 8, "x": 8, "y": 30}, "id": 17,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "node_filesystem_avail_bytes{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\",fstype!~\"tmpfs\"}", "legendFormat": "{{mountpoint}}", "range": true, "refId": "A"}],
       "title": "Filesystem available", "type": "timeseries"
     },
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "percent"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 8, "x": 16, "y": 30}, "id": 18,
-      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "gridPos": {"h": 6, "w": 8, "x": 16, "y": 30}, "id": 18,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "100 * (1 - node_filesystem_files_free{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\",fstype!~\"tmpfs\"} / node_filesystem_files{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\",fstype!~\"tmpfs\"})", "legendFormat": "{{mountpoint}}", "range": true, "refId": "A"}],
       "title": "Inode utilization", "type": "timeseries"
     },
-    {"collapsed": false, "gridPos": {"h": 1, "w": 24, "x": 0, "y": 38}, "id": 102, "panels": [], "title": "Network", "type": "row"},
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "Bps"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 39}, "id": 19,
-      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "gridPos": {"h": 6, "w": 8, "x": 0, "y": 36}, "id": 19,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [
         {"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "rate(node_network_receive_bytes_total{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\",device!=\"lo\"}[$__rate_interval])", "legendFormat": "{{device}} RX", "range": true, "refId": "A"},
         {"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "rate(node_network_transmit_bytes_total{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\",device!=\"lo\"}[$__rate_interval])", "legendFormat": "{{device}} TX", "range": true, "refId": "B"}
@@ -165,8 +162,8 @@
     },
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "ops"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 39}, "id": 20,
-      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "gridPos": {"h": 6, "w": 8, "x": 8, "y": 36}, "id": 20,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [
         {"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "rate(node_network_receive_packets_total{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\",device!=\"lo\"}[$__rate_interval])", "legendFormat": "{{device}} RX", "range": true, "refId": "A"},
         {"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "rate(node_network_transmit_packets_total{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\",device!=\"lo\"}[$__rate_interval])", "legendFormat": "{{device}} TX", "range": true, "refId": "B"}
@@ -175,8 +172,8 @@
     },
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "ops"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 47}, "id": 21,
-      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "gridPos": {"h": 6, "w": 8, "x": 16, "y": 36}, "id": 21,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [
         {"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "rate(node_network_receive_errs_total{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\",device!=\"lo\"}[$__rate_interval]) + rate(node_network_receive_drop_total{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\",device!=\"lo\"}[$__rate_interval])", "legendFormat": "{{device}} RX errors/drops", "range": true, "refId": "A"},
         {"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "rate(node_network_transmit_errs_total{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\",device!=\"lo\"}[$__rate_interval]) + rate(node_network_transmit_drop_total{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\",device!=\"lo\"}[$__rate_interval])", "legendFormat": "{{device}} TX errors/drops", "range": true, "refId": "B"}
@@ -185,8 +182,8 @@
     },
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "Bps"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 47}, "id": 22,
-      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "gridPos": {"h": 6, "w": 8, "x": 0, "y": 42}, "id": 22,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [
         {"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "node_network_speed_bytes{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\",device!=\"lo\"}", "legendFormat": "{{device}} speed", "range": true, "refId": "A"},
         {"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "node_network_carrier{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\",device!=\"lo\"}", "legendFormat": "{{device}} carrier", "range": true, "refId": "B"}
@@ -195,15 +192,15 @@
     },
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "short"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 8, "x": 0, "y": 55}, "id": 23,
-      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "gridPos": {"h": 6, "w": 8, "x": 8, "y": 42}, "id": 23,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "node_netstat_Tcp_CurrEstab{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}", "legendFormat": "Established", "range": true, "refId": "A"}],
       "title": "Established TCP connections", "type": "timeseries"
     },
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "ops"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 8, "x": 8, "y": 55}, "id": 24,
-      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "gridPos": {"h": 6, "w": 8, "x": 16, "y": 42}, "id": 24,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [
         {"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "rate(node_netstat_Tcp_InSegs{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}[$__rate_interval])", "legendFormat": "Received", "range": true, "refId": "A"},
         {"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "rate(node_netstat_Tcp_OutSegs{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}[$__rate_interval])", "legendFormat": "Sent", "range": true, "refId": "B"},
@@ -213,8 +210,8 @@
     },
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "ops"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 8, "x": 16, "y": 55}, "id": 25,
-      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "gridPos": {"h": 6, "w": 8, "x": 0, "y": 48}, "id": 25,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [
         {"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "rate(node_netstat_TcpExt_TCPTimeouts{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}[$__rate_interval])", "legendFormat": "Timeouts", "range": true, "refId": "A"},
         {"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "rate(node_netstat_Tcp_InErrs{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}[$__rate_interval])", "legendFormat": "Input errors", "range": true, "refId": "B"},
@@ -224,8 +221,8 @@
     },
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "short"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 63}, "id": 26,
-      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "gridPos": {"h": 6, "w": 8, "x": 8, "y": 48}, "id": 26,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [
         {"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "node_nf_conntrack_entries{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}", "legendFormat": "Entries", "range": true, "refId": "A"},
         {"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "node_nf_conntrack_entries_limit{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}", "legendFormat": "Limit", "range": true, "refId": "B"}
@@ -234,16 +231,15 @@
     },
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "bytes"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 63}, "id": 27,
-      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "gridPos": {"h": 6, "w": 8, "x": 16, "y": 48}, "id": 27,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "sum by (src) (node_nat_traffic{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"})", "legendFormat": "{{src}}", "range": true, "refId": "A"}],
       "title": "Current NAT traffic by source", "type": "timeseries"
     },
-    {"collapsed": false, "gridPos": {"h": 1, "w": 24, "x": 0, "y": 71}, "id": 103, "panels": [], "title": "Hardware and Wi-Fi", "type": "row"},
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "celsius"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 72}, "id": 28,
-      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "gridPos": {"h": 6, "w": 8, "x": 0, "y": 54}, "id": 28,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [
         {"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "node_hwmon_temp_celsius{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}", "legendFormat": "{{chip}} {{sensor}}", "range": true, "refId": "A"},
         {"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "node_thermal_zone_temp{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}", "legendFormat": "{{type}}", "range": true, "refId": "B"}
@@ -252,58 +248,57 @@
     },
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "short"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 72}, "id": 29,
-      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "gridPos": {"h": 6, "w": 8, "x": 8, "y": 54}, "id": 29,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "node_hwmon_pwm{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}", "legendFormat": "{{chip}} {{sensor}}", "range": true, "refId": "A"}],
       "title": "Hardware PWM", "type": "timeseries"
     },
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "short"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 8, "x": 0, "y": 80}, "id": 30,
-      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "gridPos": {"h": 6, "w": 8, "x": 16, "y": 54}, "id": 30,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "wifi_stations{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}", "legendFormat": "{{ifname}}", "range": true, "refId": "A"}],
       "title": "Wi-Fi stations by interface", "type": "timeseries"
     },
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "short"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 6, "x": 8, "y": 80}, "id": 31,
-      "options": {"colorMode": "value", "graphMode": "area", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
-      "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "count(uci_dhcp_host{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"})", "instant": true, "legendFormat": "Configured", "range": false, "refId": "A"}],
-      "title": "Static DHCP hosts", "type": "stat"
+      "gridPos": {"h": 6, "w": 8, "x": 0, "y": 60}, "id": 31,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "count(uci_dhcp_host{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"})", "instant": false, "legendFormat": "Configured", "range": true, "refId": "A"}],
+      "title": "Static DHCP hosts", "type": "timeseries"
     },
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "short"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 10, "x": 14, "y": 80}, "id": 32,
-      "options": {"colorMode": "none", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "name"},
-      "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "node_openwrt_info{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}", "instant": true, "legendFormat": "{{model}} · OpenWrt {{release}} · {{target}}", "range": false, "refId": "A"}],
-      "title": "OpenWrt system", "type": "stat"
+      "gridPos": {"h": 6, "w": 8, "x": 8, "y": 60}, "id": 32,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "node_openwrt_info{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}", "instant": false, "legendFormat": "{{model}} · OpenWrt {{release}} · {{target}}", "range": true, "refId": "A"}],
+      "title": "OpenWrt system", "type": "timeseries"
     },
-    {"collapsed": false, "gridPos": {"h": 1, "w": 24, "x": 0, "y": 88}, "id": 104, "panels": [], "title": "Exporter and system", "type": "row"},
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "percent"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 8, "x": 0, "y": 89}, "id": 33,
-      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "gridPos": {"h": 6, "w": 8, "x": 16, "y": 60}, "id": 33,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "100 * node_filefd_allocated{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"} / node_filefd_maximum{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}", "legendFormat": "Allocated", "range": true, "refId": "A"}],
       "title": "File descriptor utilization", "type": "timeseries"
     },
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "s"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 8, "x": 8, "y": 89}, "id": 34,
-      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "gridPos": {"h": 6, "w": 8, "x": 0, "y": 66}, "id": 34,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "time() - node_time_seconds{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}", "legendFormat": "Clock difference", "range": true, "refId": "A"}],
       "title": "Exporter clock difference", "type": "timeseries"
     },
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "short"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 8, "x": 16, "y": 89}, "id": 35,
-      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "gridPos": {"h": 6, "w": 8, "x": 8, "y": 66}, "id": 35,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "node_scrape_collector_success{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}", "legendFormat": "{{collector}}", "range": true, "refId": "A"}],
       "title": "Collector success", "type": "timeseries"
     },
     {
       "datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "fieldConfig": {"defaults": {"unit": "s"}, "overrides": []},
-      "gridPos": {"h": 9, "w": 24, "x": 0, "y": 97}, "id": 36,
-      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "gridPos": {"h": 6, "w": 8, "x": 16, "y": 66}, "id": 36,
+      "options": {"legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [{"datasource": {"type": "prometheus", "uid": "observability-prometheus"}, "editorMode": "code", "expr": "node_scrape_collector_duration_seconds{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\"}", "legendFormat": "{{collector}}", "range": true, "refId": "A"}],
       "title": "OpenWrt collector duration", "type": "timeseries"
     }
@@ -339,6 +334,6 @@
   "timezone": "browser",
   "title": "Network - Banana Pi R4",
   "uid": "network-banana-pi-r4",
-  "version": 2,
+  "version": 3,
   "weekStart": "monday"
 }
