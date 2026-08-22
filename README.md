@@ -6,6 +6,8 @@ Alloy collects the host systemd journal, current text logs under `/var/log`, and
 
 Prometheus scrapes the NUC node_exporter and the matching Banana Pi BPI-R4 exporter every 15 seconds. Metrics are retained for 30 days in a named volume. The NUC exporter uses the host network namespace for accurate interface metrics and binds only to the private LAN address selected by the site environment; the BPI exporter also listens only on its LAN interface. Prometheus remains internal to the Docker network.
 
+The root-level **Compute - Host** and **Compute - Banana PI R4** dashboards cover the available CPU, memory, filesystem, disk, network, connection tracking, thermal, hardware, and exporter-health metrics. Their queries were validated against both Faszyn and Szew targets; metrics absent or invalid on either site are not rendered as empty panels.
+
 Grafana opens the root-level provisioned **Loki** dashboard by default. A single full-width log panel has a **Type** filter with `All`, `OpenWrt`, `NUC`, `Docker`, and `Host` choices and a case-insensitive **Search** text filter, plus the dashboard time picker and automatic refresh, so reading and searching logs does not require Explore queries.
 
 ## Setup
