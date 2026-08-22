@@ -1,0 +1,101 @@
+logging {
+  level  = "info"
+  format = "logfmt"
+}
+
+loki.write "local" {
+  endpoint {
+    url = "http://observability-loki:3100/loki/api/v1/push"
+  }
+}
+
+loki.relabel "syslog" {
+  rule {
+    action = "labelmap"
+    regex  = "__syslog_(.+)"
+  }
+}
+
+loki.source.syslog "openwrt" {
+  listener {
+    address                         = "0.0.0.0:1514"
+    protocol                        = "tcp"
+    syslog_format                   = "rfc3164"
+    use_incoming_timestamp          = true
+    rfc3164_default_to_current_year = true
+    labels = {
+      collector = "alloy",
+      site      = sys.env("OBSERVABILITY_SITE"),
+      source    = "openwrt",
+      transport = "tcp",
+    }
+  }
+
+  listener {
+    address                         = "0.0.0.0:1514"
+    protocol                        = "udp"
+    syslog_format                   = "rfc3164"
+    use_incoming_timestamp          = true
+    rfc3164_default_to_current_year = true
+    labels = {
+      collector = "alloy",
+      site      = sys.env("OBSERVABILITY_SITE"),
+      source    = "openwrt",
+      transport = "udp",
+    }
+  }
+
+  relabel_rules = loki.relabel.syslog.rules
+  forward_to    = [loki.write.local.receiver]
+}
+
+loki.relabel "journal" {
+  rule {
+    source_labels = ["__journal__systemd_unit"]
+    target_label  = "unit"
+  }
+
+  rule {
+    source_labels = ["__journal_priority_keyword"]
+    target_label  = "level"
+  }
+}
+
+loki.source.journal "nuc" {
+  max_age       = "24h"
+  labels        = { host = sys.env("OBSERVABILITY_HOST"), site = sys.env("OBSERVABILITY_SITE"), source = "journal" }
+  relabel_rules = loki.relabel.journal.rules
+  forward_to    = [loki.write.local.receiver]
+}
+
+discovery.docker "nuc" {
+  host = "unix:///var/run/docker.sock"
+}
+
+discovery.relabel "docker" {
+  targets = discovery.docker.nuc.targets
+
+  rule {
+    source_labels = ["__meta_docker_container_name"]
+    regex         = "/(.*)"
+    target_label  = "container"
+  }
+
+  rule {
+    source_labels = ["__meta_docker_container_label_com_docker_compose_project"]
+    target_label  = "compose_project"
+  }
+
+  rule {
+    source_labels = ["__meta_docker_container_label_com_docker_compose_service"]
+    target_label  = "compose_service"
+  }
+}
+
+loki.source.docker "nuc" {
+  host          = "unix:///var/run/docker.sock"
+  targets       = discovery.docker.nuc.targets
+  labels        = { host = sys.env("OBSERVABILITY_HOST"), site = sys.env("OBSERVABILITY_SITE"), source = "docker" }
+  relabel_rules = discovery.relabel.docker.rules
+  forward_to    = [loki.write.local.receiver]
+}

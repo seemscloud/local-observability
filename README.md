@@ -1,1 +1,27 @@
 # local-observability
+
+Portable Docker Compose logging stack for the Faszyn or Szew NUC. It runs Grafana Alloy, Loki, Grafana, Nginx, and Certbot with persistent named volumes on the `observability` network.
+
+## Setup
+
+Create the ignored shared secret file:
+
+```text
+CLOUDFLARE_API_TOKEN=<token-with-DNS-edit-access>
+```
+
+Save it as `.env` with mode `0600`. Then select a site:
+
+```bash
+docker compose --env-file .env.faszyn up -d
+# or
+docker compose --env-file .env.szew up -d
+```
+
+The site files configure `grafana.faszyn.lan.bajojajo.com` or `grafana.szew.lan.bajojajo.com`. The corresponding DNS A/AAAA or CNAME record must point to the NUC before browser access works.
+
+## Exposure and certificates
+
+Only Nginx publishes host ports `80` and `443`; HTTP redirects to HTTPS and Grafana port `3000` remains internal. Certbot uses Cloudflare DNS-01, checks every 12 hours, renews when at most three days remain, and reloads only Nginx.
+
+Grafana authentication is disabled and anonymous users receive the Admin role. Do not expose this stack outside a trusted private network. Alloy's syslog listener on `1514/tcp` and `1514/udp` is internal to the Compose network until a host relay or explicit port publication is added.

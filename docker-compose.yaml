@@ -1,0 +1,212 @@
+name: ${COMPOSE_PROJECT_NAME:-observability}
+
+x-logging: &default-logging
+  driver: local
+  options:
+    max-size: 10m
+    max-file: "3"
+
+services:
+  observability-loki:
+    image: grafana/loki:3.7.0
+    container_name: observability-loki
+    hostname: observability-loki
+    command:
+      - -config.file=/etc/loki/config.yaml
+      - -target=all
+    init: true
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    expose:
+      - "3100"
+    volumes:
+      - ./config/loki/config.yaml:/etc/loki/config.yaml:ro
+      - observability-loki-data:/loki
+    networks:
+      - observability
+    logging: *default-logging
+
+  observability-alloy:
+    image: grafana/alloy:v1.18.1
+    container_name: observability-alloy
+    hostname: observability-alloy
+    user: "0:0"
+    command:
+      - run
+      - --server.http.listen-addr=0.0.0.0:12345
+      - --storage.path=/var/lib/alloy/data
+      - /etc/alloy/config.alloy
+    init: true
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      - observability-loki
+    environment:
+      OBSERVABILITY_HOST: ${OBSERVABILITY_HOST:?set OBSERVABILITY_HOST}
+      OBSERVABILITY_SITE: ${OBSERVABILITY_SITE:?set OBSERVABILITY_SITE}
+    expose:
+      - "12345"
+      - "1514/tcp"
+      - "1514/udp"
+    volumes:
+      - ./config/alloy/config.alloy:/etc/alloy/config.alloy:ro
+      - observability-alloy-data:/var/lib/alloy/data
+      - /etc/machine-id:/etc/machine-id:ro
+      - /run/log/journal:/run/log/journal:ro
+      - /var/log/journal:/var/log/journal:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - observability
+    logging: *default-logging
+
+  observability-grafana:
+    image: grafana/grafana:12.3
+    container_name: observability-grafana
+    hostname: observability-grafana
+    init: true
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      - observability-loki
+    environment:
+      GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+      GF_AUTH_BASIC_ENABLED: "false"
+      GF_AUTH_DISABLE_LOGIN_FORM: "true"
+      GF_SERVER_DOMAIN: ${GRAFANA_DOMAIN:?set GRAFANA_DOMAIN}
+      GF_SERVER_ENFORCE_DOMAIN: "true"
+      GF_SERVER_ROOT_URL: https://${GRAFANA_DOMAIN:?set GRAFANA_DOMAIN}/
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - observability-grafana-data:/var/lib/grafana
+      - ./config/grafana/provisioning:/etc/grafana/provisioning:ro
+    networks:
+      - observability
+    logging: *default-logging
+
+  observability-certbot-init:
+    image: certbot/dns-cloudflare:v5.7.0
+    container_name: observability-certbot-init
+    hostname: observability-certbot-init
+    entrypoint:
+      - python3
+      - /opt/certbot/manage.py
+    command:
+      - --init
+    init: true
+    restart: "no"
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      CERT_CHECK_INTERVAL_SECONDS: ${CERT_CHECK_INTERVAL_SECONDS:-43200}
+      CERT_RENEW_BEFORE_DAYS: ${CERT_RENEW_BEFORE_DAYS:-3}
+      CLOUDFLARE_PROPAGATION_SECONDS: ${CLOUDFLARE_PROPAGATION_SECONDS:-60}
+      GRAFANA_DOMAIN: ${GRAFANA_DOMAIN:?set GRAFANA_DOMAIN}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL:?set LETSENCRYPT_EMAIL}
+    secrets:
+      - source: cloudflare-api-token
+        target: cloudflare-api-token
+        mode: 0400
+    volumes:
+      - ./config/certbot/manage.py:/opt/certbot/manage.py:ro
+      - observability-certbot-certs:/etc/letsencrypt
+      - observability-certbot-work:/var/lib/letsencrypt
+      - observability-certbot-logs:/var/log/letsencrypt
+    networks:
+      - observability
+    logging: *default-logging
+
+  observability-nginx:
+    image: nginx:1.30.4-alpine
+    container_name: observability-nginx
+    hostname: observability-nginx
+    init: true
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      observability-certbot-init:
+        condition: service_completed_successfully
+      observability-grafana:
+        condition: service_started
+    environment:
+      GRAFANA_DOMAIN: ${GRAFANA_DOMAIN:?set GRAFANA_DOMAIN}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./config/nginx/grafana.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - observability-certbot-certs:/etc/letsencrypt:ro
+      - observability-nginx-run:/var/run/nginx
+    networks:
+      - observability
+    logging: *default-logging
+
+  observability-certbot-renew:
+    image: certbot/dns-cloudflare:v5.7.0
+    container_name: observability-certbot-renew
+    hostname: observability-certbot-renew
+    entrypoint:
+      - python3
+      - /opt/certbot/manage.py
+    command:
+      - --loop
+    init: true
+    restart: unless-stopped
+    pid: service:observability-nginx
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      observability-nginx:
+        condition: service_started
+    environment:
+      CERT_CHECK_INTERVAL_SECONDS: ${CERT_CHECK_INTERVAL_SECONDS:-43200}
+      CERT_RENEW_BEFORE_DAYS: ${CERT_RENEW_BEFORE_DAYS:-3}
+      CLOUDFLARE_PROPAGATION_SECONDS: ${CLOUDFLARE_PROPAGATION_SECONDS:-60}
+      GRAFANA_DOMAIN: ${GRAFANA_DOMAIN:?set GRAFANA_DOMAIN}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL:?set LETSENCRYPT_EMAIL}
+      NGINX_PID_FILE: /var/run/nginx/nginx.pid
+    secrets:
+      - source: cloudflare-api-token
+        target: cloudflare-api-token
+        mode: 0400
+    volumes:
+      - ./config/certbot/manage.py:/opt/certbot/manage.py:ro
+      - observability-certbot-certs:/etc/letsencrypt
+      - observability-certbot-work:/var/lib/letsencrypt
+      - observability-certbot-logs:/var/log/letsencrypt
+      - observability-nginx-run:/var/run/nginx
+    networks:
+      - observability
+    logging: *default-logging
+
+networks:
+  observability:
+    name: observability
+    driver: bridge
+
+volumes:
+  observability-alloy-data:
+    name: observability-alloy-data
+  observability-certbot-certs:
+    name: observability-certbot-certs
+  observability-certbot-logs:
+    name: observability-certbot-logs
+  observability-certbot-work:
+    name: observability-certbot-work
+  observability-loki-data:
+    name: observability-loki-data
+  observability-grafana-data:
+    name: observability-grafana-data
+  observability-nginx-run:
+    name: observability-nginx-run
+
+secrets:
+  cloudflare-api-token:
+    environment: CLOUDFLARE_API_TOKEN
