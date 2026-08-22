@@ -563,7 +563,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Network - Availability",
-  "uid": "network-availability",
+  "title": "Availability",
+  "uid": "availability",
   "version": 1
 }

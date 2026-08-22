@@ -22,7 +22,7 @@ This project defines a portable Docker Compose logging, metrics, availability, a
 - `config/grafana/dashboards/compute-banana-pi-r4.json` defines the compact three-column, historical-only `Compute - Banana PI R4` dashboard with router CPU, memory, thermal, hardware, and system metrics.
 - `config/grafana/dashboards/network-host.json` defines the compact three-column, historical-only `Network - Host` dashboard with NUC throughput, packet, error, TCP, conntrack, and kernel-network metrics.
 - `config/grafana/dashboards/network-banana-pi-r4.json` defines the compact three-column, historical-only `Network - Banana PI R4` dashboard with router throughput, TCP, conntrack, NAT, DHCP, Wi-Fi, and exporter metrics.
-- `config/grafana/dashboards/network-availability.json` defines the compact three-column, historical-only `Network - Availability` dashboard with Source, Destination, Node, and Service filters.
+- `config/grafana/dashboards/availability.json` defines the compact three-column, historical-only `Availability` dashboard with Source, Destination, Node, and Service filters.
 - `config/grafana/dashboards/storage-host.json` defines the compact three-column, historical-only `Storage - Host` dashboard with NUC filesystem, disk I/O, NVMe utilization, and SMART metrics.
 - `config/grafana/dashboards/storage-banana-pi-r4.json` defines the compact three-column, historical-only `Storage - Banana PI R4` dashboard with the filesystem and SD-card properties available from OpenWrt.
 - `config/cockpit/cockpit.conf` configures Cockpit bastion mode for both trusted site domains and Nginx's forwarded HTTPS protocol.
