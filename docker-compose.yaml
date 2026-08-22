@@ -97,7 +97,7 @@ services:
     logging: *default-logging
 
   observability-cockpit:
-    image: quay.io/cockpit/ws:365
+    image: quay.io/cockpit/ws:362
     container_name: observability-cockpit
     hostname: observability-cockpit
     command:
