@@ -2,7 +2,7 @@
   "annotations": {
     "list": []
   },
-  "description": "Ready-to-use Loki log views for the local NUC and OpenWrt router.",
+  "description": "One readable Loki log view with a source-type filter for the local NUC and OpenWrt router.",
   "editable": false,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
@@ -20,7 +20,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 12,
+        "h": 30,
         "w": 24,
         "x": 0,
         "y": 0
@@ -44,180 +44,13 @@
           },
           "direction": "backward",
           "editorMode": "code",
-          "expr": "{source=~\".+\"}",
+          "expr": "{source=~\"${log_type:regex}\"}",
+          "maxLines": 2000,
           "queryType": "range",
           "refId": "A"
         }
       ],
-      "title": "All logs",
-      "type": "logs"
-    },
-    {
-      "datasource": {
-        "type": "loki",
-        "uid": "observability-loki"
-      },
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 12,
-        "x": 0,
-        "y": 12
-      },
-      "id": 2,
-      "options": {
-        "dedupStrategy": "none",
-        "enableLogDetails": true,
-        "prettifyLogMessage": false,
-        "showCommonLabels": false,
-        "showLabels": true,
-        "showTime": true,
-        "sortOrder": "Descending",
-        "wrapLogMessage": true
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "loki",
-            "uid": "observability-loki"
-          },
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "{source=\"openwrt\"}",
-          "queryType": "range",
-          "refId": "A"
-        }
-      ],
-      "title": "OpenWrt syslog",
-      "type": "logs"
-    },
-    {
-      "datasource": {
-        "type": "loki",
-        "uid": "observability-loki"
-      },
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 12,
-        "x": 12,
-        "y": 12
-      },
-      "id": 3,
-      "options": {
-        "dedupStrategy": "none",
-        "enableLogDetails": true,
-        "prettifyLogMessage": false,
-        "showCommonLabels": false,
-        "showLabels": true,
-        "showTime": true,
-        "sortOrder": "Descending",
-        "wrapLogMessage": true
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "loki",
-            "uid": "observability-loki"
-          },
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "{source=\"journal\"}",
-          "queryType": "range",
-          "refId": "A"
-        }
-      ],
-      "title": "NUC system journal",
-      "type": "logs"
-    },
-    {
-      "datasource": {
-        "type": "loki",
-        "uid": "observability-loki"
-      },
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 12,
-        "x": 0,
-        "y": 22
-      },
-      "id": 4,
-      "options": {
-        "dedupStrategy": "none",
-        "enableLogDetails": true,
-        "prettifyLogMessage": false,
-        "showCommonLabels": false,
-        "showLabels": true,
-        "showTime": true,
-        "sortOrder": "Descending",
-        "wrapLogMessage": true
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "loki",
-            "uid": "observability-loki"
-          },
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "{source=\"docker\"}",
-          "queryType": "range",
-          "refId": "A"
-        }
-      ],
-      "title": "Docker containers",
-      "type": "logs"
-    },
-    {
-      "datasource": {
-        "type": "loki",
-        "uid": "observability-loki"
-      },
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 12,
-        "x": 12,
-        "y": 22
-      },
-      "id": 5,
-      "options": {
-        "dedupStrategy": "none",
-        "enableLogDetails": true,
-        "prettifyLogMessage": false,
-        "showCommonLabels": false,
-        "showLabels": true,
-        "showTime": true,
-        "sortOrder": "Descending",
-        "wrapLogMessage": true
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "loki",
-            "uid": "observability-loki"
-          },
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "{source=\"file\"}",
-          "queryType": "range",
-          "refId": "A"
-        }
-      ],
-      "title": "Host /var/log files",
+      "title": "Logs: $log_type",
       "type": "logs"
     }
   ],
@@ -229,7 +62,52 @@
     "local-observability"
   ],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "allValue": ".+",
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        },
+        "description": "Choose which type of logs to display.",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Log type",
+        "multi": false,
+        "name": "log_type",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "OpenWrt",
+            "value": "openwrt"
+          },
+          {
+            "selected": false,
+            "text": "NUC",
+            "value": "journal"
+          },
+          {
+            "selected": false,
+            "text": "Docker",
+            "value": "docker"
+          },
+          {
+            "selected": false,
+            "text": "Host",
+            "value": "file"
+          }
+        ],
+        "query": "OpenWrt : openwrt, NUC : journal, Docker : docker, Host : file",
+        "skipUrlSync": false,
+        "type": "custom"
+      }
+    ]
   },
   "time": {
     "from": "now-12h",
@@ -239,6 +117,6 @@
   "timezone": "browser",
   "title": "Local logs",
   "uid": "local-logs",
-  "version": 1,
+  "version": 2,
   "weekStart": "monday"
 }
