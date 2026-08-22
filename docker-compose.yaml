@@ -50,6 +50,24 @@ services:
       - /sys:/host/sys:ro
     logging: *default-logging
 
+  observability-smartctl-exporter:
+    image: prometheuscommunity/smartctl-exporter:v0.14.0
+    container_name: observability-smartctl-exporter
+    hostname: observability-smartctl-exporter
+    user: "0:0"
+    command:
+      - --smartctl.device=/dev/nvme0
+      - --smartctl.interval=60s
+      - --smartctl.rescan=10m
+    init: true
+    privileged: true
+    restart: unless-stopped
+    expose:
+      - "9633"
+    networks:
+      - observability
+    logging: *default-logging
+
   observability-prometheus:
     image: prom/prometheus:v3.12.0
     container_name: observability-prometheus
@@ -64,6 +82,7 @@ services:
       - no-new-privileges:true
     depends_on:
       - observability-node-exporter
+      - observability-smartctl-exporter
     expose:
       - "9090"
     volumes:

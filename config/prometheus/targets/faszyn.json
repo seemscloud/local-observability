@@ -14,5 +14,13 @@
       "node": "faszyn-bpi-r4",
       "site": "faszyn"
     }
+  },
+  {
+    "targets": ["observability-smartctl-exporter:9633"],
+    "labels": {
+      "compute": "storage",
+      "node": "faszyn-nuc",
+      "site": "faszyn"
+    }
   }
 ]
