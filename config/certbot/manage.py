@@ -73,7 +73,7 @@ def first_certificate(path: Path) -> x509.Certificate:
     return x509.load_pem_x509_certificate(first_pem)
 
 
-def certificate_state(domain: str, renew_before_days: int) -> tuple[bool, str]:
+def certificate_state(domains: tuple[str, ...], renew_before_days: int) -> tuple[bool, str]:
     cert_path = CERT_ROOT / "live" / CERT_NAME / "fullchain.pem"
     key_path = CERT_ROOT / "live" / CERT_NAME / "privkey.pem"
     if not cert_path.is_file() or not key_path.is_file():
@@ -83,8 +83,9 @@ def certificate_state(domain: str, renew_before_days: int) -> tuple[bool, str]:
         sans = set(cert.extensions.get_extension_for_oid(ExtensionOID.SUBJECT_ALTERNATIVE_NAME).value.get_values_for_type(x509.DNSName))
     except x509.ExtensionNotFound:
         sans = set()
-    if domain not in sans:
-        return True, "domain-changed"
+    missing_domains = set(domains) - sans
+    if missing_domains:
+        return True, f"domains-changed-missing-{','.join(sorted(missing_domains))}"
     expires = cert.not_valid_after_utc
     remaining = expires - datetime.now(timezone.utc)
     if remaining <= timedelta(days=renew_before_days):
@@ -92,7 +93,7 @@ def certificate_state(domain: str, renew_before_days: int) -> tuple[bool, str]:
     return False, f"valid-until-{expires.isoformat()}"
 
 
-def run_certbot(domain: str, email: str, propagation_seconds: int, force: bool) -> None:
+def run_certbot(domains: tuple[str, ...], email: str, propagation_seconds: int, force: bool) -> None:
     command = [
         "certbot",
         "certonly",
@@ -113,31 +114,32 @@ def run_certbot(domain: str, email: str, propagation_seconds: int, force: bool) 
         "ecdsa",
         "--elliptic-curve",
         "secp256r1",
-        "-d",
-        domain,
     ]
+    for domain in domains:
+        command.extend(("-d", domain))
     if force:
         command.append("--force-renewal")
     subprocess.run(command, check=True)
 
 
 def ensure_certificate() -> bool:
-    domain = required_env("GRAFANA_DOMAIN")
+    domains = tuple(dict.fromkeys((required_env("GRAFANA_DOMAIN"), required_env("PROMETHEUS_DOMAIN"))))
     email = required_env("LETSENCRYPT_EMAIL")
     renew_before_days = positive_int_env("CERT_RENEW_BEFORE_DAYS", 3)
     propagation_seconds = positive_int_env("CLOUDFLARE_PROPAGATION_SECONDS", 60)
     write_cloudflare_credentials()
-    must_issue, reason = certificate_state(domain, renew_before_days)
+    must_issue, reason = certificate_state(domains, renew_before_days)
+    domain_list = ",".join(domains)
     if not must_issue:
-        print(f"CERTIFICATE_OK domain={domain} state={reason}", flush=True)
+        print(f"CERTIFICATE_OK domains={domain_list} state={reason}", flush=True)
         return False
     cert_exists = (CERT_ROOT / "live" / CERT_NAME / "fullchain.pem").is_file()
-    print(f"CERTIFICATE_ISSUE domain={domain} reason={reason}", flush=True)
-    run_certbot(domain, email, propagation_seconds, force=cert_exists)
-    must_issue_after, state_after = certificate_state(domain, renew_before_days)
+    print(f"CERTIFICATE_ISSUE domains={domain_list} reason={reason}", flush=True)
+    run_certbot(domains, email, propagation_seconds, force=cert_exists)
+    must_issue_after, state_after = certificate_state(domains, renew_before_days)
     if must_issue_after:
         raise CertificateError(f"new certificate failed validation: {state_after}")
-    print(f"CERTIFICATE_ISSUED domain={domain} state={state_after}", flush=True)
+    print(f"CERTIFICATE_ISSUED domains={domain_list} state={state_after}", flush=True)
     return True
 
 

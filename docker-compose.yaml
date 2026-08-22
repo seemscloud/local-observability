@@ -164,6 +164,7 @@ services:
       CERT_RENEW_BEFORE_DAYS: ${CERT_RENEW_BEFORE_DAYS:-3}
       CLOUDFLARE_PROPAGATION_SECONDS: ${CLOUDFLARE_PROPAGATION_SECONDS:-60}
       GRAFANA_DOMAIN: ${GRAFANA_DOMAIN:?set GRAFANA_DOMAIN}
+      PROMETHEUS_DOMAIN: ${PROMETHEUS_DOMAIN:?set PROMETHEUS_DOMAIN}
       LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL:?set LETSENCRYPT_EMAIL}
     secrets:
       - source: cloudflare-api-token
@@ -191,8 +192,11 @@ services:
         condition: service_completed_successfully
       observability-grafana:
         condition: service_started
+      observability-prometheus:
+        condition: service_started
     environment:
       GRAFANA_DOMAIN: ${GRAFANA_DOMAIN:?set GRAFANA_DOMAIN}
+      PROMETHEUS_DOMAIN: ${PROMETHEUS_DOMAIN:?set PROMETHEUS_DOMAIN}
     ports:
       - "80:80"
       - "443:443"
@@ -227,6 +231,7 @@ services:
       CERT_RENEW_BEFORE_DAYS: ${CERT_RENEW_BEFORE_DAYS:-3}
       CLOUDFLARE_PROPAGATION_SECONDS: ${CLOUDFLARE_PROPAGATION_SECONDS:-60}
       GRAFANA_DOMAIN: ${GRAFANA_DOMAIN:?set GRAFANA_DOMAIN}
+      PROMETHEUS_DOMAIN: ${PROMETHEUS_DOMAIN:?set PROMETHEUS_DOMAIN}
       LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL:?set LETSENCRYPT_EMAIL}
       NGINX_PID_FILE: /var/run/nginx/nginx.pid
     secrets:

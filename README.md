@@ -26,7 +26,7 @@ docker compose --env-file .env.faszyn up -d
 docker compose --env-file .env.szew up -d
 ```
 
-The site files configure `grafana.faszyn.lan.bajojajo.com` or `grafana.szew.lan.bajojajo.com`. The corresponding DNS A/AAAA or CNAME record must point to the NUC before browser access works.
+The site files configure `grafana.<site>.lan.bajojajo.com` and `prometheus.<site>.lan.bajojajo.com`. The corresponding DNS A/AAAA or CNAME records must point to the NUC before browser access works.
 
 ## Banana Pi BPI-R4 exporter
 
@@ -59,6 +59,6 @@ The tracked site target files point Prometheus at `192.168.255.101:9100` for Fas
 
 ## Exposure and certificates
 
-Nginx publishes host ports `80` and `443`; HTTP redirects to HTTPS and Grafana port `3000` remains internal. Alloy publishes `1514/tcp` and `1514/udp` for remote syslog from the BPI routers. Certbot uses Cloudflare DNS-01, checks every 12 hours, renews when at most three days remain, and reloads only Nginx.
+Nginx publishes host ports `80` and `443`; HTTP redirects to HTTPS, Grafana port `3000` remains internal, and Prometheus port `9090` is reachable only through the site-specific HTTPS reverse proxy. Alloy publishes `1514/tcp` and `1514/udp` for remote syslog from the BPI routers. Certbot uses Cloudflare DNS-01 to maintain one trusted certificate containing both Grafana and Prometheus SANs, checks every 12 hours, renews when at most three days remain, and reloads only Nginx.
 
 Nginx injects a fixed auth-proxy identity for Grafana's built-in server administrator, so browser access has full Grafana Admin permissions without a login form. Grafana port `3000` remains internal and anonymous authentication is disabled; do not expose this stack outside a trusted private network.
