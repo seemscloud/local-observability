@@ -16,8 +16,10 @@ This project defines a portable Docker Compose logging and host-metrics stack fo
 - `config/grafana/provisioning/datasources/prometheus.yaml` provisions the internal Prometheus data source.
 - `config/grafana/provisioning/dashboards/loki.yaml` provisions repository-owned dashboards from `config/grafana/dashboards/` at the Grafana root level.
 - `config/grafana/dashboards/loki.json` defines the default `Logging - Loki` single-panel log dashboard with an All/OpenWrt/NUC/Docker/Host type selector and case-insensitive text search.
-- `config/grafana/dashboards/compute-host.json` defines the compact three-column, historical-only `Compute - Host` dashboard with a dynamic multi-host selector and metrics verified on both NUCs.
-- `config/grafana/dashboards/network-banana-pi-r4.json` defines the compact three-column, historical-only `Network - Banana Pi R4` dashboard with a dynamic multi-router selector and metrics verified on both OpenWrt routers.
+- `config/grafana/dashboards/compute-host.json` defines the compact three-column, historical-only `Compute - Host` dashboard with NUC CPU, memory, storage, thermal, and system metrics.
+- `config/grafana/dashboards/compute-banana-pi-r4.json` defines the compact three-column, historical-only `Compute - Banana PI R4` dashboard with router CPU, memory, filesystem, thermal, hardware, and system metrics.
+- `config/grafana/dashboards/network-host.json` defines the compact three-column, historical-only `Network - Host` dashboard with NUC throughput, packet, error, TCP, conntrack, and kernel-network metrics.
+- `config/grafana/dashboards/network-banana-pi-r4.json` defines the compact three-column, historical-only `Network - Banana PI R4` dashboard with router throughput, TCP, conntrack, NAT, DHCP, Wi-Fi, and exporter metrics.
 - `config/certbot/manage.py` issues and renews the site-specific multi-domain Grafana and Prometheus certificate with Cloudflare DNS-01 and reloads only Nginx when certificate content changes.
 - `config/nginx/` owns the TLS reverse proxies for Grafana and Prometheus and their shared HTTP-to-HTTPS redirect.
 - `.env.faszyn` and `.env.szew` are tracked, non-secret site selectors for the NUC identity, private node_exporter listen address, Grafana domain, and Prometheus domain.
