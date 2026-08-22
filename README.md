@@ -28,6 +28,35 @@ docker compose --env-file .env.szew up -d
 
 The site files configure `grafana.faszyn.lan.bajojajo.com` or `grafana.szew.lan.bajojajo.com`. The corresponding DNS A/AAAA or CNAME record must point to the NUC before browser access works.
 
+## Banana Pi BPI-R4 exporter
+
+On OpenWrt 25.12, install the exporter and collectors used by the BPI dashboard:
+
+```sh
+apk add \
+  prometheus-node-exporter-lua \
+  prometheus-node-exporter-lua-ethtool \
+  prometheus-node-exporter-lua-filesystem \
+  prometheus-node-exporter-lua-hostapd_ubus_stations \
+  prometheus-node-exporter-lua-hwmon \
+  prometheus-node-exporter-lua-nat_traffic \
+  prometheus-node-exporter-lua-netstat \
+  prometheus-node-exporter-lua-nft-counters \
+  prometheus-node-exporter-lua-openwrt \
+  prometheus-node-exporter-lua-thermal \
+  prometheus-node-exporter-lua-uci_dhcp_host \
+  prometheus-node-exporter-lua-wifi \
+  prometheus-node-exporter-lua-wifi_stations
+
+uci set prometheus-node-exporter-lua.main.listen_interface='lan'
+uci set prometheus-node-exporter-lua.main.listen_port='9100'
+uci commit prometheus-node-exporter-lua
+/etc/init.d/prometheus-node-exporter-lua enable
+/etc/init.d/prometheus-node-exporter-lua restart
+```
+
+The tracked site target files point Prometheus at `192.168.255.101:9100` for Faszyn and `192.168.254.101:9100` for Szew. Keep this endpoint reachable only from the trusted LAN.
+
 ## Exposure and certificates
 
 Nginx publishes host ports `80` and `443`; HTTP redirects to HTTPS and Grafana port `3000` remains internal. Alloy publishes `1514/tcp` and `1514/udp` for remote syslog from the BPI routers. Certbot uses Cloudflare DNS-01, checks every 12 hours, renews when at most three days remain, and reloads only Nginx.
