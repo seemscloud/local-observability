@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This project defines a portable Docker Compose logging stack for a NUC. Grafana Alloy collects the NUC journal, text logs under `/var/log`, and Docker logs and accepts RFC3164/RFC5424 syslog internally, Grafana Loki stores logs on a named volume, Grafana provides an unauthenticated administrative UI, and Nginx terminates automatically managed Let's Encrypt certificates in front of Grafana.
+This project defines a portable Docker Compose logging and host-metrics stack for a NUC. Grafana Alloy collects logs, Grafana Loki stores logs, node_exporter exposes NUC host metrics, Prometheus scrapes the NUC and its Banana Pi BPI-R4 and stores metrics for 30 days, Grafana provides an unauthenticated administrative UI, and Nginx terminates automatically managed Let's Encrypt certificates in front of Grafana.
 
 ## Structure
 
@@ -10,7 +10,10 @@ This project defines a portable Docker Compose logging stack for a NUC. Grafana 
 - `docker-compose.yaml` owns the Compose project, services, named volumes, network, container names, hostnames, and published ports.
 - `config/alloy/config.alloy` owns log discovery, syslog ingestion, relabeling, and forwarding to Loki.
 - `config/loki/config.yaml` owns single-node filesystem storage and 30-day retention.
+- `config/prometheus/prometheus.yaml` owns the 15-second Prometheus scrape configuration.
+- `config/prometheus/targets/faszyn.json` and `config/prometheus/targets/szew.json` select the site-specific NUC and BPI-R4 scrape targets and labels.
 - `config/grafana/provisioning/datasources/loki.yaml` provisions Loki as Grafana's default data source.
+- `config/grafana/provisioning/datasources/prometheus.yaml` provisions the internal Prometheus data source.
 - `config/grafana/provisioning/dashboards/loki.yaml` provisions repository-owned dashboards from `config/grafana/dashboards/` at the Grafana root level.
 - `config/grafana/dashboards/loki.json` defines the default `Loki` single-panel log dashboard with an All/OpenWrt/NUC/Docker/Host type selector and case-insensitive text search.
 - `config/certbot/manage.py` issues and renews the site-specific certificate with Cloudflare DNS-01 and reloads only Nginx when certificate content changes.
@@ -20,7 +23,7 @@ This project defines a portable Docker Compose logging stack for a NUC. Grafana 
 
 ## Constraints
 
-Keep the Compose project name and network name `observability`; keep every service, container, hostname, and named volume under the `observability-` prefix. Use named volumes, do not use Compose `links`, publish Nginx on host ports `80` and `443`, and publish Alloy syslog on `1514/tcp` and `1514/udp`; Grafana port `3000` must remain internal. Certificate renewal starts only when three days or less remain and must signal only Nginx.
+Keep the Compose project name and network name `observability`; keep every service, container, hostname, and named volume under the `observability-` prefix. Use named volumes, do not use Compose `links`, publish Nginx on host ports `80` and `443`, and publish Alloy syslog on `1514/tcp` and `1514/udp`; Grafana `3000`, Prometheus `9090`, and the NUC node_exporter `9100` must remain internal. Keep Prometheus retention at 30 days. Certificate renewal starts only when three days or less remain and must signal only Nginx.
 
 ## Verification
 

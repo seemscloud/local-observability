@@ -27,6 +27,55 @@ services:
       - observability
     logging: *default-logging
 
+  observability-node-exporter:
+    image: quay.io/prometheus/node-exporter:v1.12.1
+    container_name: observability-node-exporter
+    hostname: observability-node-exporter
+    user: "0:0"
+    command:
+      - --path.procfs=/host/proc
+      - --path.rootfs=/host/root
+      - --path.sysfs=/host/sys
+    init: true
+    pid: host
+    read_only: true
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    expose:
+      - "9100"
+    volumes:
+      - /:/host/root:ro,rslave
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+    networks:
+      - observability
+    logging: *default-logging
+
+  observability-prometheus:
+    image: prom/prometheus:v3.12.0
+    container_name: observability-prometheus
+    hostname: observability-prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yaml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=30d
+    init: true
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      - observability-node-exporter
+    expose:
+      - "9090"
+    volumes:
+      - ./config/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
+      - ./config/prometheus/targets/${OBSERVABILITY_SITE:?set OBSERVABILITY_SITE}.json:/etc/prometheus/targets/compute.json:ro
+      - observability-prometheus-data:/prometheus
+    networks:
+      - observability
+    logging: *default-logging
+
   observability-alloy:
     image: grafana/alloy:v1.18.1
     container_name: observability-alloy
@@ -73,6 +122,7 @@ services:
       - no-new-privileges:true
     depends_on:
       - observability-loki
+      - observability-prometheus
     environment:
       GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
       GF_ANALYTICS_REPORTING_ENABLED: "false"
@@ -206,6 +256,8 @@ volumes:
     name: observability-certbot-work
   observability-loki-data:
     name: observability-loki-data
+  observability-prometheus-data:
+    name: observability-prometheus-data
   observability-grafana-data:
     name: observability-grafana-data
   observability-nginx-run:

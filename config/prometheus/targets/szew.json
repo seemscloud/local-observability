@@ -1,0 +1,18 @@
+[
+  {
+    "targets": ["observability-node-exporter:9100"],
+    "labels": {
+      "compute": "host",
+      "device": "szew-nuc",
+      "site": "szew"
+    }
+  },
+  {
+    "targets": ["192.168.254.101:9100"],
+    "labels": {
+      "compute": "banana_pi_r4",
+      "device": "szew-bpi-r4",
+      "site": "szew"
+    }
+  }
+]

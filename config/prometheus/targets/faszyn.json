@@ -1,0 +1,18 @@
+[
+  {
+    "targets": ["observability-node-exporter:9100"],
+    "labels": {
+      "compute": "host",
+      "device": "faszyn-nuc",
+      "site": "faszyn"
+    }
+  },
+  {
+    "targets": ["192.168.255.101:9100"],
+    "labels": {
+      "compute": "banana_pi_r4",
+      "device": "faszyn-bpi-r4",
+      "site": "faszyn"
+    }
+  }
+]
