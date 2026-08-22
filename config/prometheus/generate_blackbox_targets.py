@@ -86,16 +86,17 @@ def build_targets() -> list[dict[str, object]]:
                 "prober_address": source_config["prober"],
             }
 
-            groups.append(
-                target_group(
-                    target=destination_config["nuc_ip"],
-                    module="icmp_ipv4",
-                    node=destination_config["nuc_node"],
-                    service="icmp-nuc",
-                    protocol="icmp",
-                    **common,
+            if source == destination:
+                groups.append(
+                    target_group(
+                        target=destination_config["nuc_ip"],
+                        module="icmp_ipv4",
+                        node=destination_config["nuc_node"],
+                        service="icmp-nuc",
+                        protocol="icmp",
+                        **common,
+                    )
                 )
-            )
             for port, service in NUC_TCP_SERVICES.items():
                 groups.append(
                     target_group(
@@ -119,16 +120,17 @@ def build_targets() -> list[dict[str, object]]:
                     )
                 )
 
-            groups.append(
-                target_group(
-                    target=destination_config["bpi_ip"],
-                    module="icmp_ipv4",
-                    node=destination_config["bpi_node"],
-                    service="icmp-bpi",
-                    protocol="icmp",
-                    **common,
+            if source == destination:
+                groups.append(
+                    target_group(
+                        target=destination_config["bpi_ip"],
+                        module="icmp_ipv4",
+                        node=destination_config["bpi_node"],
+                        service="icmp-bpi",
+                        protocol="icmp",
+                        **common,
+                    )
                 )
-            )
             for port, service in BPI_TCP_SERVICES.items():
                 groups.append(
                     target_group(

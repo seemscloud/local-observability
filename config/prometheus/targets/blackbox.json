@@ -281,20 +281,6 @@
   },
   {
     "targets": [
-      "192.168.254.11"
-    ],
-    "labels": {
-      "module": "icmp_ipv4",
-      "node": "szew-nuc",
-      "probe_from": "faszyn",
-      "probe_to": "szew",
-      "prober_address": "192.168.255.11:9115",
-      "protocol": "icmp",
-      "service": "icmp-nuc"
-    }
-  },
-  {
-    "targets": [
       "192.168.254.11:22"
     ],
     "labels": {
@@ -449,20 +435,6 @@
   },
   {
     "targets": [
-      "192.168.254.101"
-    ],
-    "labels": {
-      "module": "icmp_ipv4",
-      "node": "szew-bpi-r4",
-      "probe_from": "faszyn",
-      "probe_to": "szew",
-      "prober_address": "192.168.255.11:9115",
-      "protocol": "icmp",
-      "service": "icmp-bpi"
-    }
-  },
-  {
-    "targets": [
       "192.168.254.101:22"
     ],
     "labels": {
@@ -557,20 +529,6 @@
       "prober_address": "192.168.255.11:9115",
       "protocol": "https",
       "service": "openwrt-web-https"
-    }
-  },
-  {
-    "targets": [
-      "192.168.255.11"
-    ],
-    "labels": {
-      "module": "icmp_ipv4",
-      "node": "faszyn-nuc",
-      "probe_from": "szew",
-      "probe_to": "faszyn",
-      "prober_address": "192.168.254.11:9115",
-      "protocol": "icmp",
-      "service": "icmp-nuc"
     }
   },
   {
@@ -725,20 +683,6 @@
       "prober_address": "192.168.254.11:9115",
       "protocol": "https",
       "service": "cockpit-https"
-    }
-  },
-  {
-    "targets": [
-      "192.168.255.101"
-    ],
-    "labels": {
-      "module": "icmp_ipv4",
-      "node": "faszyn-bpi-r4",
-      "probe_from": "szew",
-      "probe_to": "faszyn",
-      "prober_address": "192.168.254.11:9115",
-      "protocol": "icmp",
-      "service": "icmp-bpi"
     }
   },
   {

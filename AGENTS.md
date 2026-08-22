@@ -12,7 +12,7 @@ This project defines a portable Docker Compose logging, metrics, availability, a
 - `config/loki/config.yaml` owns single-node filesystem storage and 30-day retention.
 - `config/prometheus/prometheus.yaml` owns the five-second Prometheus scrape configuration.
 - `config/blackbox/blackbox.yaml` defines HTTP, TCP, ICMP, and DNS probes.
-- `config/prometheus/generate_blackbox_targets.py` generates the shared full-matrix probe inventory in `config/prometheus/targets/blackbox.json`; both Prometheus instances scrape both Blackbox exporters.
+- `config/prometheus/generate_blackbox_targets.py` generates the shared full source-destination TCP/UDP/HTTPS matrix plus local-only ICMP probes in `config/prometheus/targets/blackbox.json`; both Prometheus instances scrape both Blackbox exporters.
 - `config/prometheus/targets/faszyn.json` and `config/prometheus/targets/szew.json` select both sites' NUC, NUC SMART, and BPI-R4 scrape targets and labels while preserving the local smartctl service name.
 - `config/grafana/provisioning/datasources/loki.yaml` provisions Loki as Grafana's default data source.
 - `config/grafana/provisioning/datasources/prometheus.yaml` provisions the internal Prometheus data source.
