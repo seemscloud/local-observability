@@ -10,6 +10,8 @@ loki.write "local" {
 }
 
 loki.relabel "syslog" {
+  forward_to = []
+
   rule {
     action = "labelmap"
     regex  = "__syslog_(.+)"
@@ -50,6 +52,8 @@ loki.source.syslog "openwrt" {
 }
 
 loki.relabel "journal" {
+  forward_to = []
+
   rule {
     source_labels = ["__journal__systemd_unit"]
     target_label  = "unit"
@@ -66,6 +70,32 @@ loki.source.journal "nuc" {
   labels        = { host = sys.env("OBSERVABILITY_HOST"), site = sys.env("OBSERVABILITY_SITE"), source = "journal" }
   relabel_rules = loki.relabel.journal.rules
   forward_to    = [loki.write.local.receiver]
+}
+
+local.file_match "host_var_log" {
+  path_targets = [
+    {
+      __path__ = "/host/var/log/{syslog,messages,*.log}",
+      host     = sys.env("OBSERVABILITY_HOST"),
+      site     = sys.env("OBSERVABILITY_SITE"),
+      source   = "file",
+    },
+    {
+      __path__ = "/host/var/log/{apt,unattended-upgrades,nginx,apache2,audit}/**/*.log",
+      host     = sys.env("OBSERVABILITY_HOST"),
+      site     = sys.env("OBSERVABILITY_SITE"),
+      source   = "file",
+    },
+  ]
+  ignore_older_than = "720h"
+  sync_period       = "10s"
+}
+
+loki.source.file "host_var_log" {
+  targets                 = local.file_match.host_var_log.targets
+  forward_to              = [loki.write.local.receiver]
+  tail_from_end            = true
+  on_positions_file_error = "restart_from_end"
 }
 
 discovery.docker "nuc" {

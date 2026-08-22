@@ -45,9 +45,16 @@ def positive_int_env(name: str, default: int) -> int:
 
 def write_cloudflare_credentials() -> None:
     try:
-        token = TOKEN_SECRET.read_text(encoding="utf-8").strip()
+        secret = TOKEN_SECRET.read_text(encoding="utf-8")
     except OSError as exc:
         raise CertificateError(f"cannot read Cloudflare token secret: {exc}") from exc
+    token = ""
+    for line in secret.splitlines():
+        if line.startswith("CLOUDFLARE_API_TOKEN="):
+            token = line.split("=", 1)[1].strip()
+            break
+    if not token:
+        token = secret.strip()
     if not token:
         raise CertificateError("Cloudflare token secret is empty")
     CREDENTIALS_FILE.write_text(f"dns_cloudflare_api_token = {token}\n", encoding="utf-8")

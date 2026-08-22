@@ -55,6 +55,7 @@ services:
       - observability-alloy-data:/var/lib/alloy/data
       - /etc/machine-id:/etc/machine-id:ro
       - /run/log/journal:/run/log/journal:ro
+      - /var/log:/host/var/log:ro
       - /var/log/journal:/var/log/journal:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
@@ -209,4 +210,4 @@ volumes:
 
 secrets:
   cloudflare-api-token:
-    environment: CLOUDFLARE_API_TOKEN
+    file: .env

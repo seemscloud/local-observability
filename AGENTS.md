@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This project defines a portable Docker Compose logging stack for a NUC. Grafana Alloy collects NUC journal and Docker logs and accepts RFC3164/RFC5424 syslog internally, Grafana Loki stores logs on a named volume, Grafana provides an unauthenticated administrative UI, and Nginx terminates automatically managed Let's Encrypt certificates in front of Grafana.
+This project defines a portable Docker Compose logging stack for a NUC. Grafana Alloy collects the NUC journal, text logs under `/var/log`, and Docker logs and accepts RFC3164/RFC5424 syslog internally, Grafana Loki stores logs on a named volume, Grafana provides an unauthenticated administrative UI, and Nginx terminates automatically managed Let's Encrypt certificates in front of Grafana.
 
 ## Structure
 

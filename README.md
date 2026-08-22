@@ -2,6 +2,8 @@
 
 Portable Docker Compose logging stack for the Faszyn or Szew NUC. It runs Grafana Alloy, Loki, Grafana, Nginx, and Certbot with persistent named volumes on the `observability` network.
 
+Alloy collects the host systemd journal, current text logs under `/var/log`, and Docker container logs. File collection starts at the end of existing files on first deployment, then persists offsets in the Alloy data volume.
+
 ## Setup
 
 Create the ignored shared secret file:
