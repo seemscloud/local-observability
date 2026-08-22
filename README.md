@@ -32,7 +32,7 @@ docker compose --env-file .env.szew up -d
 
 The site files configure `grafana.<site>.lan.bajojajo.com`, `prometheus.<site>.lan.bajojajo.com`, and `cockpit.<site>.lan.bajojajo.com`. The corresponding DNS records must point to the NUC before browser access works.
 
-Cockpit runs without a login screen. Its privileged Compose container uses PID-host namespace access only to start the host-installed `cockpit-bridge` as root through Cockpit's `--local-session` mode; opening the site-specific Cockpit domain immediately grants full administrative access to that NUC. Install `cockpit-bridge`, `cockpit-system`, `cockpit-storaged`, `cockpit-networkmanager`, and `cockpit-packagekit` on each Ubuntu NUC, but keep the native `cockpit.socket` disabled. Cockpit port `9090` remains internal and the only browser endpoint is the trusted Nginx proxy on the private network.
+Cockpit runs without a browser-visible login screen. Nginx transparently creates or reuses the browser's Cockpit session with a fixed `comp` identity, while the unprivileged bastion authenticates each independent session to its local Docker host with the ignored `.cockpit/id_ed25519` key and `.cockpit/known_hosts`. Install `cockpit-bridge`, `cockpit-system`, `cockpit-storaged`, `cockpit-networkmanager`, and `cockpit-packagekit` on each Ubuntu NUC, authorize the generated public key for `comp`, and keep the native `cockpit.socket` disabled. Cockpit port `9090` remains internal and the only browser endpoint is the trusted Nginx proxy on the private network.
 
 ## Cloudflare Mesh
 
