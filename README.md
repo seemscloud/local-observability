@@ -4,7 +4,7 @@ Portable Docker Compose logging and host-metrics stack for the Faszyn or Szew NU
 
 Alloy collects the host systemd journal, current text logs under `/var/log`, and Docker container logs. File collection starts at the end of existing files on first deployment, then persists offsets in the Alloy data volume.
 
-Prometheus scrapes the NUC node_exporter and the matching Banana Pi BPI-R4 exporter every 15 seconds. Metrics are retained for 30 days in a named volume. The per-site target files select the corresponding BPI LAN address; Prometheus and both exporter endpoints remain internal to the trusted LAN or Docker network.
+Prometheus scrapes the NUC node_exporter and the matching Banana Pi BPI-R4 exporter every 15 seconds. Metrics are retained for 30 days in a named volume. The NUC exporter uses the host network namespace for accurate interface metrics and binds only to the private LAN address selected by the site environment; the BPI exporter also listens only on its LAN interface. Prometheus remains internal to the Docker network.
 
 Grafana opens the root-level provisioned **Loki** dashboard by default. A single full-width log panel has a **Type** filter with `All`, `OpenWrt`, `NUC`, `Docker`, and `Host` choices and a case-insensitive **Search** text filter, plus the dashboard time picker and automatic refresh, so reading and searching logs does not require Explore queries.
 

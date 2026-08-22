@@ -36,20 +36,18 @@ services:
       - --path.procfs=/host/proc
       - --path.rootfs=/host/root
       - --path.sysfs=/host/sys
+      - --web.listen-address=${NODE_EXPORTER_LISTEN_ADDRESS:?set NODE_EXPORTER_LISTEN_ADDRESS}:9100
     init: true
+    network_mode: host
     pid: host
     read_only: true
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
-    expose:
-      - "9100"
     volumes:
       - /:/host/root:ro,rslave
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
-    networks:
-      - observability
     logging: *default-logging
 
   observability-prometheus:
