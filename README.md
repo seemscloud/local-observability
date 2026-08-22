@@ -61,4 +61,4 @@ The tracked site target files point Prometheus at `192.168.255.101:9100` for Fas
 
 Nginx publishes host ports `80` and `443`; HTTP redirects to HTTPS and Grafana port `3000` remains internal. Alloy publishes `1514/tcp` and `1514/udp` for remote syslog from the BPI routers. Certbot uses Cloudflare DNS-01, checks every 12 hours, renews when at most three days remain, and reloads only Nginx.
 
-Grafana authentication is disabled and anonymous users receive the Admin role. Do not expose this stack outside a trusted private network.
+Nginx injects a fixed auth-proxy identity for Grafana's built-in server administrator, so browser access has full Grafana Admin permissions without a login form. Grafana port `3000` remains internal and anonymous authentication is disabled; do not expose this stack outside a trusted private network.
