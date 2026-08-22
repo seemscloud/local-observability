@@ -9,6 +9,12 @@ loki.write "local" {
   }
 }
 
+loki.write "remote" {
+  endpoint {
+    url = sys.env("REMOTE_LOKI_URL")
+  }
+}
+
 loki.relabel "syslog" {
   forward_to = []
 
@@ -48,7 +54,7 @@ loki.source.syslog "openwrt" {
   }
 
   relabel_rules = loki.relabel.syslog.rules
-  forward_to    = [loki.write.local.receiver]
+  forward_to    = [loki.write.local.receiver, loki.write.remote.receiver]
 }
 
 loki.relabel "journal" {
@@ -69,7 +75,7 @@ loki.source.journal "nuc" {
   max_age       = "24h"
   labels        = { host = sys.env("OBSERVABILITY_HOST"), site = sys.env("OBSERVABILITY_SITE"), source = "journal" }
   relabel_rules = loki.relabel.journal.rules
-  forward_to    = [loki.write.local.receiver]
+  forward_to    = [loki.write.local.receiver, loki.write.remote.receiver]
 }
 
 local.file_match "host_var_log" {
@@ -93,7 +99,7 @@ local.file_match "host_var_log" {
 
 loki.source.file "host_var_log" {
   targets                 = local.file_match.host_var_log.targets
-  forward_to              = [loki.write.local.receiver]
+  forward_to              = [loki.write.local.receiver, loki.write.remote.receiver]
   tail_from_end            = true
   on_positions_file_error = "restart_from_end"
 }
@@ -127,5 +133,5 @@ loki.source.docker "nuc" {
   targets       = discovery.docker.nuc.targets
   labels        = { host = sys.env("OBSERVABILITY_HOST"), site = sys.env("OBSERVABILITY_SITE"), source = "docker" }
   relabel_rules = discovery.relabel.docker.rules
-  forward_to    = [loki.write.local.receiver]
+  forward_to    = [loki.write.local.receiver, loki.write.remote.receiver]
 }

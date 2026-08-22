@@ -22,5 +22,29 @@
       "node": "faszyn-nuc",
       "site": "faszyn"
     }
+  },
+  {
+    "targets": ["192.168.254.11:9100"],
+    "labels": {
+      "compute": "host",
+      "node": "szew-nuc",
+      "site": "szew"
+    }
+  },
+  {
+    "targets": ["192.168.254.101:9100"],
+    "labels": {
+      "compute": "banana_pi_r4",
+      "node": "szew-bpi-r4",
+      "site": "szew"
+    }
+  },
+  {
+    "targets": ["192.168.254.11:9633"],
+    "labels": {
+      "compute": "storage",
+      "node": "szew-nuc",
+      "site": "szew"
+    }
   }
 ]

@@ -20,6 +20,8 @@ services:
       - no-new-privileges:true
     expose:
       - "3100"
+    ports:
+      - "${NODE_EXPORTER_LISTEN_ADDRESS:?set NODE_EXPORTER_LISTEN_ADDRESS}:3100:3100"
     volumes:
       - ./config/loki/config.yaml:/etc/loki/config.yaml:ro
       - observability-loki-data:/loki
@@ -58,12 +60,14 @@ services:
     command:
       - --smartctl.device=/dev/nvme0
       - --smartctl.interval=60s
-      - --smartctl.rescan=10m
+      - --smartctl.rescan=5m
     init: true
     privileged: true
     restart: unless-stopped
     expose:
       - "9633"
+    ports:
+      - "${NODE_EXPORTER_LISTEN_ADDRESS:?set NODE_EXPORTER_LISTEN_ADDRESS}:9633:9633"
     networks:
       - observability
     logging: *default-logging
@@ -112,6 +116,7 @@ services:
     environment:
       OBSERVABILITY_HOST: ${OBSERVABILITY_HOST:?set OBSERVABILITY_HOST}
       OBSERVABILITY_SITE: ${OBSERVABILITY_SITE:?set OBSERVABILITY_SITE}
+      REMOTE_LOKI_URL: http://${REMOTE_OBSERVABILITY_ADDRESS:?set REMOTE_OBSERVABILITY_ADDRESS}:3100/loki/api/v1/push
     expose:
       - "12345"
     ports:

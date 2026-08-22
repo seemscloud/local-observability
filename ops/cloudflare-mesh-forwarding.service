@@ -1,0 +1,13 @@
+[Unit]
+Description=Allow forwarding between Cloudflare Mesh and the LAN
+After=network-online.target docker.service warp-svc.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+Environment=MESH_LAN_INTERFACE=enp86s0
+ExecStart=/usr/local/sbin/cloudflare-mesh-forwarding
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
