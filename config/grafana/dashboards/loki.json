@@ -115,8 +115,8 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Local logs",
-  "uid": "local-logs",
-  "version": 2,
+  "title": "Loki",
+  "uid": "loki",
+  "version": 1,
   "weekStart": "monday"
 }
