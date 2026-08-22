@@ -3,6 +3,12 @@ map $cockpit_login_cookie $cockpit_session_cookie {
     default "";
 }
 
+map "$cockpit_session_cookie|$http_cookie" $cockpit_proxy_cookie {
+    "~^(?<cockpit_new_cookie>cockpit=[^|]+)\|" $cockpit_new_cookie;
+    "~^\|(?<cockpit_existing_cookie>.*)$" $cockpit_existing_cookie;
+    default "";
+}
+
 server {
     listen 80;
     listen [::]:80;
@@ -56,7 +62,7 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Host $host;
         proxy_set_header X-Forwarded-Proto https;
-        proxy_set_header Cookie "$cockpit_session_cookie; $http_cookie";
+        proxy_set_header Cookie $cockpit_proxy_cookie;
         proxy_set_header Authorization "";
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection $connection_upgrade;
