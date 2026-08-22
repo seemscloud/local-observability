@@ -18,7 +18,7 @@ This project defines a portable Docker Compose logging stack for a NUC. Grafana 
 
 ## Constraints
 
-Keep the Compose project name and network name `observability`; keep every service, container, hostname, and named volume under the `observability-` prefix. Use named volumes for persistent data, do not use Compose `links`, and publish only Nginx on host ports `80` and `443`; Grafana port `3000` must remain internal. Certificate renewal starts only when three days or less remain and must signal only Nginx. The internal Alloy syslog listener on port `1514` is not reachable from BPI routers until deployment explicitly adds a host relay or publishes that port.
+Keep the Compose project name and network name `observability`; keep every service, container, hostname, and named volume under the `observability-` prefix. Use named volumes, do not use Compose `links`, publish Nginx on host ports `80` and `443`, and publish Alloy syslog on `1514/tcp` and `1514/udp`; Grafana port `3000` must remain internal. Certificate renewal starts only when three days or less remain and must signal only Nginx.
 
 ## Verification
 

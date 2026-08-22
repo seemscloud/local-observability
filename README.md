@@ -24,6 +24,6 @@ The site files configure `grafana.faszyn.lan.bajojajo.com` or `grafana.szew.lan.
 
 ## Exposure and certificates
 
-Only Nginx publishes host ports `80` and `443`; HTTP redirects to HTTPS and Grafana port `3000` remains internal. Certbot uses Cloudflare DNS-01, checks every 12 hours, renews when at most three days remain, and reloads only Nginx.
+Nginx publishes host ports `80` and `443`; HTTP redirects to HTTPS and Grafana port `3000` remains internal. Alloy publishes `1514/tcp` and `1514/udp` for remote syslog from the BPI routers. Certbot uses Cloudflare DNS-01, checks every 12 hours, renews when at most three days remain, and reloads only Nginx.
 
-Grafana authentication is disabled and anonymous users receive the Admin role. Do not expose this stack outside a trusted private network. Alloy's syslog listener on `1514/tcp` and `1514/udp` is internal to the Compose network until a host relay or explicit port publication is added.
+Grafana authentication is disabled and anonymous users receive the Admin role. Do not expose this stack outside a trusted private network.

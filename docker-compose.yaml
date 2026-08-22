@@ -48,8 +48,9 @@ services:
       OBSERVABILITY_SITE: ${OBSERVABILITY_SITE:?set OBSERVABILITY_SITE}
     expose:
       - "12345"
-      - "1514/tcp"
-      - "1514/udp"
+    ports:
+      - "1514:1514/tcp"
+      - "1514:1514/udp"
     volumes:
       - ./config/alloy/config.alloy:/etc/alloy/config.alloy:ro
       - observability-alloy-data:/var/lib/alloy/data
