@@ -2,7 +2,7 @@
   "annotations": {
     "list": []
   },
-  "description": "Compact three-column historical CPU, memory, filesystem, thermal, hardware, and system charts for the selected Banana Pi BPI-R4 OpenWrt routers.",
+  "description": "Compact three-column historical CPU, memory, thermal, hardware, and system charts for the selected Banana Pi BPI-R4 OpenWrt routers.",
   "editable": false,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
@@ -115,9 +115,7 @@
       },
       "fieldConfig": {
         "defaults": {
-          "max": 100,
-          "min": 0,
-          "unit": "percent"
+          "unit": "celsius"
         },
         "overrides": []
       },
@@ -126,53 +124,6 @@
         "w": 8,
         "x": 16,
         "y": 0
-      },
-      "id": 5,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "observability-prometheus"
-          },
-          "editorMode": "code",
-          "expr": "100 * (1 - node_filesystem_avail_bytes{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\",mountpoint=\"/overlay\"} / node_filesystem_size_bytes{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\",mountpoint=\"/overlay\"})",
-          "instant": false,
-          "legendFormat": "/overlay",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Overlay filesystem used",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "observability-prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "unit": "celsius"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 8,
-        "x": 0,
-        "y": 6
       },
       "id": 6,
       "options": {
@@ -218,7 +169,7 @@
       "gridPos": {
         "h": 6,
         "w": 8,
-        "x": 8,
+        "x": 0,
         "y": 6
       },
       "id": 9,
@@ -264,7 +215,7 @@
       "gridPos": {
         "h": 6,
         "w": 8,
-        "x": 16,
+        "x": 8,
         "y": 6
       },
       "id": 10,
@@ -332,8 +283,8 @@
       "gridPos": {
         "h": 6,
         "w": 8,
-        "x": 0,
-        "y": 12
+        "x": 16,
+        "y": 6
       },
       "id": 11,
       "options": {
@@ -378,7 +329,7 @@
       "gridPos": {
         "h": 6,
         "w": 8,
-        "x": 8,
+        "x": 0,
         "y": 12
       },
       "id": 12,
@@ -457,7 +408,7 @@
       "gridPos": {
         "h": 6,
         "w": 8,
-        "x": 16,
+        "x": 8,
         "y": 12
       },
       "id": 13,
@@ -514,8 +465,8 @@
       "gridPos": {
         "h": 6,
         "w": 8,
-        "x": 0,
-        "y": 18
+        "x": 16,
+        "y": 12
       },
       "id": 14,
       "options": {
@@ -582,7 +533,7 @@
       "gridPos": {
         "h": 6,
         "w": 8,
-        "x": 8,
+        "x": 0,
         "y": 18
       },
       "id": 15,
@@ -621,144 +572,6 @@
       },
       "fieldConfig": {
         "defaults": {
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 8,
-        "x": 16,
-        "y": 18
-      },
-      "id": 16,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "observability-prometheus"
-          },
-          "editorMode": "code",
-          "expr": "100 * (1 - node_filesystem_avail_bytes{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\",fstype!~\"tmpfs\"} / node_filesystem_size_bytes{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\",fstype!~\"tmpfs\"})",
-          "legendFormat": "{{mountpoint}}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Filesystem utilization",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "observability-prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "unit": "bytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 8,
-        "x": 0,
-        "y": 24
-      },
-      "id": 17,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "observability-prometheus"
-          },
-          "editorMode": "code",
-          "expr": "node_filesystem_avail_bytes{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\",fstype!~\"tmpfs\"}",
-          "legendFormat": "{{mountpoint}}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Filesystem available",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "observability-prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 8,
-        "x": 8,
-        "y": 24
-      },
-      "id": 18,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "observability-prometheus"
-          },
-          "editorMode": "code",
-          "expr": "100 * (1 - node_filesystem_files_free{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\",fstype!~\"tmpfs\"} / node_filesystem_files{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\",fstype!~\"tmpfs\"})",
-          "legendFormat": "{{mountpoint}}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Inode utilization",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "observability-prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
           "unit": "celsius"
         },
         "overrides": []
@@ -766,8 +579,8 @@
       "gridPos": {
         "h": 6,
         "w": 8,
-        "x": 16,
-        "y": 24
+        "x": 8,
+        "y": 18
       },
       "id": 28,
       "options": {
@@ -823,8 +636,8 @@
       "gridPos": {
         "h": 6,
         "w": 8,
-        "x": 0,
-        "y": 30
+        "x": 16,
+        "y": 18
       },
       "id": 29,
       "options": {
@@ -869,8 +682,8 @@
       "gridPos": {
         "h": 6,
         "w": 8,
-        "x": 8,
-        "y": 30
+        "x": 0,
+        "y": 24
       },
       "id": 33,
       "options": {
@@ -915,8 +728,8 @@
       "gridPos": {
         "h": 6,
         "w": 8,
-        "x": 16,
-        "y": 30
+        "x": 8,
+        "y": 24
       },
       "id": 34,
       "options": {
@@ -945,6 +758,53 @@
         }
       ],
       "title": "Exporter clock difference",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "observability-prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 16,
+        "y": 24
+      },
+      "id": 101,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "observability-prometheus"
+          },
+          "editorMode": "code",
+          "expr": "count(node_cpu_seconds_total{job=\"compute\",compute=\"banana_pi_r4\",node=~\"${node:regex}\",mode=\"idle\"})",
+          "instant": false,
+          "legendFormat": "Cores",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "CPU cores",
       "type": "timeseries"
     }
   ],
@@ -995,6 +855,6 @@
   "timezone": "browser",
   "title": "Compute - Banana PI R4",
   "uid": "compute-banana-pi-r4",
-  "version": 1,
+  "version": 2,
   "weekStart": "monday"
 }
