@@ -31,3 +31,6 @@ iptables -C DOCKER-USER -i CloudflareWARP -o "${lan_interface}" -j ACCEPT 2>/dev
 
 iptables -C DOCKER-USER -i "${lan_interface}" -o CloudflareWARP -j ACCEPT 2>/dev/null || \
   iptables -I DOCKER-USER 1 -i "${lan_interface}" -o CloudflareWARP -j ACCEPT
+
+iptables -t nat -C POSTROUTING ! -s "${local_subnet}" -d "${local_subnet}" -o "${lan_interface}" -j MASQUERADE 2>/dev/null || \
+  iptables -t nat -I POSTROUTING 1 ! -s "${local_subnet}" -d "${local_subnet}" -o "${lan_interface}" -j MASQUERADE
