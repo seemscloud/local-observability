@@ -1,0 +1,1122 @@
+[
+  {
+    "targets": [
+      "192.168.255.11"
+    ],
+    "labels": {
+      "module": "icmp_ipv4",
+      "node": "faszyn-nuc",
+      "probe_from": "faszyn",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "icmp",
+      "service": "icmp-nuc"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.11:22"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "faszyn-nuc",
+      "probe_from": "faszyn",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "tcp",
+      "service": "ssh-nuc"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.11:80"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "faszyn-nuc",
+      "probe_from": "faszyn",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "tcp",
+      "service": "nginx-http"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.11:443"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "faszyn-nuc",
+      "probe_from": "faszyn",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "tcp",
+      "service": "nginx-https"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.11:1514"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "faszyn-nuc",
+      "probe_from": "faszyn",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "tcp",
+      "service": "syslog-tcp"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.11:3100"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "faszyn-nuc",
+      "probe_from": "faszyn",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "tcp",
+      "service": "loki"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.11:9100"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "faszyn-nuc",
+      "probe_from": "faszyn",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "tcp",
+      "service": "node-exporter"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.11:9115"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "faszyn-nuc",
+      "probe_from": "faszyn",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "tcp",
+      "service": "blackbox-exporter"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.11:9633"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "faszyn-nuc",
+      "probe_from": "faszyn",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "tcp",
+      "service": "smartctl-exporter"
+    }
+  },
+  {
+    "targets": [
+      "https://grafana.faszyn.lan.bajojajo.com/"
+    ],
+    "labels": {
+      "module": "http_2xx_ipv4",
+      "node": "faszyn-nuc",
+      "probe_from": "faszyn",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "https",
+      "service": "grafana-https"
+    }
+  },
+  {
+    "targets": [
+      "https://prometheus.faszyn.lan.bajojajo.com/"
+    ],
+    "labels": {
+      "module": "http_2xx_ipv4",
+      "node": "faszyn-nuc",
+      "probe_from": "faszyn",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "https",
+      "service": "prometheus-https"
+    }
+  },
+  {
+    "targets": [
+      "https://cockpit.faszyn.lan.bajojajo.com/"
+    ],
+    "labels": {
+      "module": "http_2xx_ipv4",
+      "node": "faszyn-nuc",
+      "probe_from": "faszyn",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "https",
+      "service": "cockpit-https"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.101"
+    ],
+    "labels": {
+      "module": "icmp_ipv4",
+      "node": "faszyn-bpi-r4",
+      "probe_from": "faszyn",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "icmp",
+      "service": "icmp-bpi"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.101:22"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "faszyn-bpi-r4",
+      "probe_from": "faszyn",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "tcp",
+      "service": "ssh-bpi"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.101:53"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "faszyn-bpi-r4",
+      "probe_from": "faszyn",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "tcp",
+      "service": "dns-tcp"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.101:80"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "faszyn-bpi-r4",
+      "probe_from": "faszyn",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "tcp",
+      "service": "openwrt-http"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.101:443"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "faszyn-bpi-r4",
+      "probe_from": "faszyn",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "tcp",
+      "service": "openwrt-https"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.101:9100"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "faszyn-bpi-r4",
+      "probe_from": "faszyn",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "tcp",
+      "service": "openwrt-node-exporter"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.101:53"
+    ],
+    "labels": {
+      "module": "dns_udp_ipv4",
+      "node": "faszyn-bpi-r4",
+      "probe_from": "faszyn",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "udp",
+      "service": "dns-udp-query"
+    }
+  },
+  {
+    "targets": [
+      "https://bpi.faszyn.lan.bajojajo.com/"
+    ],
+    "labels": {
+      "module": "http_2xx_ipv4",
+      "node": "faszyn-bpi-r4",
+      "probe_from": "faszyn",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "https",
+      "service": "openwrt-web-https"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.11"
+    ],
+    "labels": {
+      "module": "icmp_ipv4",
+      "node": "szew-nuc",
+      "probe_from": "faszyn",
+      "probe_to": "szew",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "icmp",
+      "service": "icmp-nuc"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.11:22"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "szew-nuc",
+      "probe_from": "faszyn",
+      "probe_to": "szew",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "tcp",
+      "service": "ssh-nuc"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.11:80"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "szew-nuc",
+      "probe_from": "faszyn",
+      "probe_to": "szew",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "tcp",
+      "service": "nginx-http"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.11:443"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "szew-nuc",
+      "probe_from": "faszyn",
+      "probe_to": "szew",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "tcp",
+      "service": "nginx-https"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.11:1514"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "szew-nuc",
+      "probe_from": "faszyn",
+      "probe_to": "szew",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "tcp",
+      "service": "syslog-tcp"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.11:3100"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "szew-nuc",
+      "probe_from": "faszyn",
+      "probe_to": "szew",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "tcp",
+      "service": "loki"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.11:9100"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "szew-nuc",
+      "probe_from": "faszyn",
+      "probe_to": "szew",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "tcp",
+      "service": "node-exporter"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.11:9115"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "szew-nuc",
+      "probe_from": "faszyn",
+      "probe_to": "szew",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "tcp",
+      "service": "blackbox-exporter"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.11:9633"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "szew-nuc",
+      "probe_from": "faszyn",
+      "probe_to": "szew",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "tcp",
+      "service": "smartctl-exporter"
+    }
+  },
+  {
+    "targets": [
+      "https://grafana.szew.lan.bajojajo.com/"
+    ],
+    "labels": {
+      "module": "http_2xx_ipv4",
+      "node": "szew-nuc",
+      "probe_from": "faszyn",
+      "probe_to": "szew",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "https",
+      "service": "grafana-https"
+    }
+  },
+  {
+    "targets": [
+      "https://prometheus.szew.lan.bajojajo.com/"
+    ],
+    "labels": {
+      "module": "http_2xx_ipv4",
+      "node": "szew-nuc",
+      "probe_from": "faszyn",
+      "probe_to": "szew",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "https",
+      "service": "prometheus-https"
+    }
+  },
+  {
+    "targets": [
+      "https://cockpit.szew.lan.bajojajo.com/"
+    ],
+    "labels": {
+      "module": "http_2xx_ipv4",
+      "node": "szew-nuc",
+      "probe_from": "faszyn",
+      "probe_to": "szew",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "https",
+      "service": "cockpit-https"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.101"
+    ],
+    "labels": {
+      "module": "icmp_ipv4",
+      "node": "szew-bpi-r4",
+      "probe_from": "faszyn",
+      "probe_to": "szew",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "icmp",
+      "service": "icmp-bpi"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.101:22"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "szew-bpi-r4",
+      "probe_from": "faszyn",
+      "probe_to": "szew",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "tcp",
+      "service": "ssh-bpi"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.101:53"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "szew-bpi-r4",
+      "probe_from": "faszyn",
+      "probe_to": "szew",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "tcp",
+      "service": "dns-tcp"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.101:80"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "szew-bpi-r4",
+      "probe_from": "faszyn",
+      "probe_to": "szew",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "tcp",
+      "service": "openwrt-http"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.101:443"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "szew-bpi-r4",
+      "probe_from": "faszyn",
+      "probe_to": "szew",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "tcp",
+      "service": "openwrt-https"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.101:9100"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "szew-bpi-r4",
+      "probe_from": "faszyn",
+      "probe_to": "szew",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "tcp",
+      "service": "openwrt-node-exporter"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.101:53"
+    ],
+    "labels": {
+      "module": "dns_udp_ipv4",
+      "node": "szew-bpi-r4",
+      "probe_from": "faszyn",
+      "probe_to": "szew",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "udp",
+      "service": "dns-udp-query"
+    }
+  },
+  {
+    "targets": [
+      "https://bpi.szew.lan.bajojajo.com/"
+    ],
+    "labels": {
+      "module": "http_2xx_ipv4",
+      "node": "szew-bpi-r4",
+      "probe_from": "faszyn",
+      "probe_to": "szew",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "https",
+      "service": "openwrt-web-https"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.11"
+    ],
+    "labels": {
+      "module": "icmp_ipv4",
+      "node": "faszyn-nuc",
+      "probe_from": "szew",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "icmp",
+      "service": "icmp-nuc"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.11:22"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "faszyn-nuc",
+      "probe_from": "szew",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "tcp",
+      "service": "ssh-nuc"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.11:80"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "faszyn-nuc",
+      "probe_from": "szew",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "tcp",
+      "service": "nginx-http"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.11:443"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "faszyn-nuc",
+      "probe_from": "szew",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "tcp",
+      "service": "nginx-https"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.11:1514"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "faszyn-nuc",
+      "probe_from": "szew",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "tcp",
+      "service": "syslog-tcp"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.11:3100"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "faszyn-nuc",
+      "probe_from": "szew",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "tcp",
+      "service": "loki"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.11:9100"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "faszyn-nuc",
+      "probe_from": "szew",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "tcp",
+      "service": "node-exporter"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.11:9115"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "faszyn-nuc",
+      "probe_from": "szew",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "tcp",
+      "service": "blackbox-exporter"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.11:9633"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "faszyn-nuc",
+      "probe_from": "szew",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "tcp",
+      "service": "smartctl-exporter"
+    }
+  },
+  {
+    "targets": [
+      "https://grafana.faszyn.lan.bajojajo.com/"
+    ],
+    "labels": {
+      "module": "http_2xx_ipv4",
+      "node": "faszyn-nuc",
+      "probe_from": "szew",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "https",
+      "service": "grafana-https"
+    }
+  },
+  {
+    "targets": [
+      "https://prometheus.faszyn.lan.bajojajo.com/"
+    ],
+    "labels": {
+      "module": "http_2xx_ipv4",
+      "node": "faszyn-nuc",
+      "probe_from": "szew",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "https",
+      "service": "prometheus-https"
+    }
+  },
+  {
+    "targets": [
+      "https://cockpit.faszyn.lan.bajojajo.com/"
+    ],
+    "labels": {
+      "module": "http_2xx_ipv4",
+      "node": "faszyn-nuc",
+      "probe_from": "szew",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "https",
+      "service": "cockpit-https"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.101"
+    ],
+    "labels": {
+      "module": "icmp_ipv4",
+      "node": "faszyn-bpi-r4",
+      "probe_from": "szew",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "icmp",
+      "service": "icmp-bpi"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.101:22"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "faszyn-bpi-r4",
+      "probe_from": "szew",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "tcp",
+      "service": "ssh-bpi"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.101:53"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "faszyn-bpi-r4",
+      "probe_from": "szew",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "tcp",
+      "service": "dns-tcp"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.101:80"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "faszyn-bpi-r4",
+      "probe_from": "szew",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "tcp",
+      "service": "openwrt-http"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.101:443"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "faszyn-bpi-r4",
+      "probe_from": "szew",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "tcp",
+      "service": "openwrt-https"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.101:9100"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "faszyn-bpi-r4",
+      "probe_from": "szew",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "tcp",
+      "service": "openwrt-node-exporter"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.101:53"
+    ],
+    "labels": {
+      "module": "dns_udp_ipv4",
+      "node": "faszyn-bpi-r4",
+      "probe_from": "szew",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "udp",
+      "service": "dns-udp-query"
+    }
+  },
+  {
+    "targets": [
+      "https://bpi.faszyn.lan.bajojajo.com/"
+    ],
+    "labels": {
+      "module": "http_2xx_ipv4",
+      "node": "faszyn-bpi-r4",
+      "probe_from": "szew",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "https",
+      "service": "openwrt-web-https"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.11"
+    ],
+    "labels": {
+      "module": "icmp_ipv4",
+      "node": "szew-nuc",
+      "probe_from": "szew",
+      "probe_to": "szew",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "icmp",
+      "service": "icmp-nuc"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.11:22"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "szew-nuc",
+      "probe_from": "szew",
+      "probe_to": "szew",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "tcp",
+      "service": "ssh-nuc"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.11:80"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "szew-nuc",
+      "probe_from": "szew",
+      "probe_to": "szew",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "tcp",
+      "service": "nginx-http"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.11:443"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "szew-nuc",
+      "probe_from": "szew",
+      "probe_to": "szew",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "tcp",
+      "service": "nginx-https"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.11:1514"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "szew-nuc",
+      "probe_from": "szew",
+      "probe_to": "szew",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "tcp",
+      "service": "syslog-tcp"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.11:3100"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "szew-nuc",
+      "probe_from": "szew",
+      "probe_to": "szew",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "tcp",
+      "service": "loki"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.11:9100"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "szew-nuc",
+      "probe_from": "szew",
+      "probe_to": "szew",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "tcp",
+      "service": "node-exporter"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.11:9115"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "szew-nuc",
+      "probe_from": "szew",
+      "probe_to": "szew",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "tcp",
+      "service": "blackbox-exporter"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.11:9633"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "szew-nuc",
+      "probe_from": "szew",
+      "probe_to": "szew",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "tcp",
+      "service": "smartctl-exporter"
+    }
+  },
+  {
+    "targets": [
+      "https://grafana.szew.lan.bajojajo.com/"
+    ],
+    "labels": {
+      "module": "http_2xx_ipv4",
+      "node": "szew-nuc",
+      "probe_from": "szew",
+      "probe_to": "szew",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "https",
+      "service": "grafana-https"
+    }
+  },
+  {
+    "targets": [
+      "https://prometheus.szew.lan.bajojajo.com/"
+    ],
+    "labels": {
+      "module": "http_2xx_ipv4",
+      "node": "szew-nuc",
+      "probe_from": "szew",
+      "probe_to": "szew",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "https",
+      "service": "prometheus-https"
+    }
+  },
+  {
+    "targets": [
+      "https://cockpit.szew.lan.bajojajo.com/"
+    ],
+    "labels": {
+      "module": "http_2xx_ipv4",
+      "node": "szew-nuc",
+      "probe_from": "szew",
+      "probe_to": "szew",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "https",
+      "service": "cockpit-https"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.101"
+    ],
+    "labels": {
+      "module": "icmp_ipv4",
+      "node": "szew-bpi-r4",
+      "probe_from": "szew",
+      "probe_to": "szew",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "icmp",
+      "service": "icmp-bpi"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.101:22"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "szew-bpi-r4",
+      "probe_from": "szew",
+      "probe_to": "szew",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "tcp",
+      "service": "ssh-bpi"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.101:53"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "szew-bpi-r4",
+      "probe_from": "szew",
+      "probe_to": "szew",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "tcp",
+      "service": "dns-tcp"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.101:80"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "szew-bpi-r4",
+      "probe_from": "szew",
+      "probe_to": "szew",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "tcp",
+      "service": "openwrt-http"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.101:443"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "szew-bpi-r4",
+      "probe_from": "szew",
+      "probe_to": "szew",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "tcp",
+      "service": "openwrt-https"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.101:9100"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "szew-bpi-r4",
+      "probe_from": "szew",
+      "probe_to": "szew",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "tcp",
+      "service": "openwrt-node-exporter"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.101:53"
+    ],
+    "labels": {
+      "module": "dns_udp_ipv4",
+      "node": "szew-bpi-r4",
+      "probe_from": "szew",
+      "probe_to": "szew",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "udp",
+      "service": "dns-udp-query"
+    }
+  },
+  {
+    "targets": [
+      "https://bpi.szew.lan.bajojajo.com/"
+    ],
+    "labels": {
+      "module": "http_2xx_ipv4",
+      "node": "szew-bpi-r4",
+      "probe_from": "szew",
+      "probe_to": "szew",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "https",
+      "service": "openwrt-web-https"
+    }
+  }
+]

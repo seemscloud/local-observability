@@ -123,7 +123,15 @@ def run_certbot(domains: tuple[str, ...], email: str, propagation_seconds: int, 
 
 
 def ensure_certificate() -> bool:
-    domains = tuple(dict.fromkeys((required_env("GRAFANA_DOMAIN"), required_env("PROMETHEUS_DOMAIN"))))
+    domains = tuple(
+        dict.fromkeys(
+            (
+                required_env("GRAFANA_DOMAIN"),
+                required_env("PROMETHEUS_DOMAIN"),
+                required_env("COCKPIT_DOMAIN"),
+            )
+        )
+    )
     email = required_env("LETSENCRYPT_EMAIL")
     renew_before_days = positive_int_env("CERT_RENEW_BEFORE_DAYS", 3)
     propagation_seconds = positive_int_env("CLOUDFLARE_PROPAGATION_SECONDS", 60)

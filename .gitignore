@@ -1,1 +1,4 @@
 .env
+.cockpit/
+__pycache__/
+*.py[cod]

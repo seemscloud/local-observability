@@ -1,6 +1,6 @@
 # local-observability
 
-Portable Docker Compose logging and host-metrics stack for the Faszyn or Szew NUC. It runs Grafana Alloy, Loki, Prometheus, node_exporter, Grafana, Nginx, and Certbot with persistent named volumes on the `observability` network.
+Portable Docker Compose logging, metrics, availability, and host-management stack for the Faszyn or Szew NUC. It runs Grafana Alloy, Loki, Prometheus, node_exporter, smartctl_exporter, Blackbox Exporter, Cockpit, Grafana, Nginx, and Certbot on the `observability` network.
 
 Alloy collects the host systemd journal, current text logs under `/var/log`, and Docker container logs. File collection starts at the end of existing files on first deployment, then persists offsets in the Alloy data volume.
 
@@ -8,7 +8,9 @@ Prometheus scrapes both NUC node_exporters, both smartctl_exporters, and both Ba
 
 Each Alloy instance collects only its local host, Docker, file, journal, and OpenWrt syslog sources, then writes every stream to both Loki instances. Consequently either Grafana can query all Faszyn and Szew logs and metrics without depending on the peer Grafana or Prometheus service.
 
-Six root-level metric dashboards separate compute, network, and storage concerns for the NUC host and Banana PI R4: **Compute - Host**, **Compute - Banana PI R4**, **Network - Host**, **Network - Banana PI R4**, **Storage - Host**, and **Storage - Banana PI R4**. Together with **Logging - Loki**, Grafana provisions exactly seven dashboards. Host storage includes NVMe SMART health; Banana PI storage reports only the filesystem and SD-card properties actually exposed by OpenWrt because its SD media has no SMART interface. Every metric is shown as a historical time-series chart in a compact three-column layout with no current-value stat cards. The **Host** and **Router** filters are populated dynamically from Prometheus and support one, multiple, or all monitored nodes. Queries were validated against both Faszyn and Szew targets; metrics absent or invalid on either site are not rendered as empty panels.
+Seven root-level metric dashboards separate compute, network, storage, and availability concerns for the NUC host and Banana PI R4: **Compute - Host**, **Compute - Banana PI R4**, **Network - Host**, **Network - Banana PI R4**, **Network - Availability**, **Storage - Host**, and **Storage - Banana PI R4**. Together with **Logging - Loki**, Grafana provisions exactly eight dashboards. Host storage includes NVMe SMART health; Banana PI storage reports only the filesystem and SD-card properties actually exposed by OpenWrt because its SD media has no SMART interface. Every metric is shown as a historical time-series chart in a compact three-column layout with no current-value stat cards.
+
+Each site's Blackbox Exporter probes both its own site and the peer site, while both Prometheus instances scrape both exporters. The availability matrix covers NUC and BPI-R4 ICMP, NUC ports `22`, `80`, `443`, `1514/tcp`, `3100`, `9100`, `9115`, and `9633`, BPI-R4 ports `22`, `53/tcp`, `80`, `443`, and `9100`, a DNS query over UDP, and HTTPS checks for Grafana, Prometheus, Cockpit, and LuCI. **Network - Availability** filters the resulting history by probe source, destination site, node, and service.
 
 Grafana opens the root-level provisioned **Logging - Loki** dashboard by default. A single full-width log panel has a **Type** filter with `All`, `OpenWrt`, `NUC`, `Docker`, and `Host` choices and a case-insensitive **Search** text filter, plus the dashboard time picker and automatic refresh, so reading and searching logs does not require Explore queries.
 
@@ -28,7 +30,9 @@ docker compose --env-file .env.faszyn up -d
 docker compose --env-file .env.szew up -d
 ```
 
-The site files configure `grafana.<site>.lan.bajojajo.com` and `prometheus.<site>.lan.bajojajo.com`. The corresponding DNS A/AAAA or CNAME records must point to the NUC before browser access works.
+The site files configure `grafana.<site>.lan.bajojajo.com`, `prometheus.<site>.lan.bajojajo.com`, and `cockpit.<site>.lan.bajojajo.com`. The corresponding DNS records must point to the NUC before browser access works.
+
+Cockpit runs as an unprivileged SSH bastion inside Compose. Install `cockpit-bridge`, `cockpit-system`, `cockpit-storaged`, `cockpit-networkmanager`, and `cockpit-packagekit` on each managed Ubuntu NUC, but keep the native `cockpit.socket` disabled; the only browser endpoint is the Compose Nginx proxy. The Cockpit login page accepts an SSH host, user, and credentials, so it can connect to either NUC over the private Mesh network.
 
 ## Cloudflare Mesh
 
@@ -72,6 +76,6 @@ The tracked site target files point Prometheus at `192.168.255.101:9100` for Fas
 
 ## Exposure and certificates
 
-Nginx publishes host ports `80` and `443`; HTTP redirects to HTTPS, Grafana port `3000` remains internal, and Prometheus port `9090` is reachable only through the site-specific HTTPS reverse proxy. Alloy publishes `1514/tcp` and `1514/udp` for remote syslog from the BPI routers. Loki `3100`, node_exporter `9100`, and smartctl_exporter `9633` bind only to the site's private LAN address for Mesh access. Certbot uses Cloudflare DNS-01 to maintain one trusted certificate containing both Grafana and Prometheus SANs, checks every 12 hours, renews when at most three days remain, and reloads only Nginx.
+Nginx publishes host ports `80` and `443`; HTTP redirects to HTTPS, while Grafana `3000`, Prometheus `9090`, and Cockpit `9090` remain internal. Alloy publishes `1514/tcp` and `1514/udp` for remote syslog from the BPI routers. Loki `3100`, node_exporter `9100`, Blackbox Exporter `9115`, and smartctl_exporter `9633` bind only to the site's private LAN address for Mesh access. Certbot uses Cloudflare DNS-01 to maintain one trusted certificate containing Grafana, Prometheus, and Cockpit SANs, checks every 12 hours, renews when at most three days remain, and reloads only Nginx.
 
 Nginx injects a fixed auth-proxy identity for Grafana's built-in server administrator, so browser access has full Grafana Admin permissions without a login form. Grafana port `3000` remains internal and anonymous authentication is disabled; do not expose this stack outside a trusted private network.

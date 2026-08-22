@@ -1,0 +1,569 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": false,
+  "graphTooltip": 1,
+  "panels": [
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "observability-prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "max": 100,
+          "min": 0,
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "asc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "observability-prometheus"
+          },
+          "editorMode": "code",
+          "expr": "100 * probe_success{job=\"blackbox\",probe_from=~\"${source:regex}\",probe_to=~\"${destination:regex}\",node=~\"${node:regex}\",service=~\"${service:regex}\"}",
+          "legendFormat": "{{probe_from}} → {{node}} / {{service}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Availability",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "observability-prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "min": 0,
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 8,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "observability-prometheus"
+          },
+          "editorMode": "code",
+          "expr": "probe_duration_seconds{job=\"blackbox\",probe_from=~\"${source:regex}\",probe_to=~\"${destination:regex}\",node=~\"${node:regex}\",service=~\"${service:regex}\"}",
+          "legendFormat": "{{probe_from}} → {{node}} / {{service}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Probe duration",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "observability-prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "min": 0,
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "id": 3,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "asc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "observability-prometheus"
+          },
+          "editorMode": "code",
+          "expr": "probe_ssl_earliest_cert_expiry{job=\"blackbox\",probe_from=~\"${source:regex}\",probe_to=~\"${destination:regex}\",node=~\"${node:regex}\",service=~\"${service:regex}\"} - time()",
+          "legendFormat": "{{probe_from}} → {{node}} / {{service}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "TLS certificate time remaining",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "observability-prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "min": 0,
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 0,
+        "y": 6
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "observability-prometheus"
+          },
+          "editorMode": "code",
+          "expr": "probe_http_status_code{job=\"blackbox\",probe_from=~\"${source:regex}\",probe_to=~\"${destination:regex}\",node=~\"${node:regex}\",service=~\"${service:regex}\"}",
+          "legendFormat": "{{probe_from}} → {{node}} / {{service}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "HTTP status code",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "observability-prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "min": 0,
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 8,
+        "y": 6
+      },
+      "id": 5,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "observability-prometheus"
+          },
+          "editorMode": "code",
+          "expr": "probe_http_duration_seconds{job=\"blackbox\",probe_from=~\"${source:regex}\",probe_to=~\"${destination:regex}\",node=~\"${node:regex}\",service=~\"${service:regex}\"}",
+          "legendFormat": "{{probe_from}} → {{node}} / {{service}} / {{phase}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "HTTP request phases",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "observability-prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "min": 0,
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 16,
+        "y": 6
+      },
+      "id": 6,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "observability-prometheus"
+          },
+          "editorMode": "code",
+          "expr": "probe_icmp_duration_seconds{job=\"blackbox\",probe_from=~\"${source:regex}\",probe_to=~\"${destination:regex}\",node=~\"${node:regex}\",service=~\"${service:regex}\"}",
+          "legendFormat": "{{probe_from}} → {{node}} / {{phase}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "ICMP phases",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "observability-prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "min": 0,
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 0,
+        "y": 12
+      },
+      "id": 7,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "observability-prometheus"
+          },
+          "editorMode": "code",
+          "expr": "probe_dns_duration_seconds{job=\"blackbox\",probe_from=~\"${source:regex}\",probe_to=~\"${destination:regex}\",node=~\"${node:regex}\",service=~\"${service:regex}\"}",
+          "legendFormat": "{{probe_from}} → {{node}} / DNS",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "DNS query duration",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "observability-prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "min": 0,
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 8,
+        "y": 12
+      },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "observability-prometheus"
+          },
+          "editorMode": "code",
+          "expr": "probe_http_content_length{job=\"blackbox\",probe_from=~\"${source:regex}\",probe_to=~\"${destination:regex}\",node=~\"${node:regex}\",service=~\"${service:regex}\"}",
+          "legendFormat": "{{probe_from}} → {{node}} / {{service}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "HTTP response size",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "observability-prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "min": 0,
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 16,
+        "y": 12
+      },
+      "id": 9,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "observability-prometheus"
+          },
+          "editorMode": "code",
+          "expr": "probe_http_redirects{job=\"blackbox\",probe_from=~\"${source:regex}\",probe_to=~\"${destination:regex}\",node=~\"${node:regex}\",service=~\"${service:regex}\"}",
+          "legendFormat": "{{probe_from}} → {{node}} / {{service}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "HTTP redirects",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "15s",
+  "schemaVersion": 41,
+  "tags": [
+    "network",
+    "availability",
+    "blackbox"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allValue": ".+",
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "observability-prometheus"
+        },
+        "definition": "label_values(probe_success{job=\"blackbox\"}, probe_from)",
+        "description": "Select the site from which Blackbox runs the probe.",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Source",
+        "multi": true,
+        "name": "source",
+        "options": [],
+        "query": {
+          "query": "label_values(probe_success{job=\"blackbox\"}, probe_from)",
+          "refId": "PrometheusVariableQueryEditor-Source"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".+",
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "observability-prometheus"
+        },
+        "definition": "label_values(probe_success{job=\"blackbox\",probe_from=~\"${source:regex}\"}, probe_to)",
+        "description": "Select the destination site.",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Destination",
+        "multi": true,
+        "name": "destination",
+        "options": [],
+        "query": {
+          "query": "label_values(probe_success{job=\"blackbox\",probe_from=~\"${source:regex}\"}, probe_to)",
+          "refId": "PrometheusVariableQueryEditor-Destination"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".+",
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "observability-prometheus"
+        },
+        "definition": "label_values(probe_success{job=\"blackbox\",probe_from=~\"${source:regex}\",probe_to=~\"${destination:regex}\"}, node)",
+        "description": "Select one or more NUC or Banana Pi nodes.",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Node",
+        "multi": true,
+        "name": "node",
+        "options": [],
+        "query": {
+          "query": "label_values(probe_success{job=\"blackbox\",probe_from=~\"${source:regex}\",probe_to=~\"${destination:regex}\"}, node)",
+          "refId": "PrometheusVariableQueryEditor-Node"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".+",
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "observability-prometheus"
+        },
+        "definition": "label_values(probe_success{job=\"blackbox\",probe_from=~\"${source:regex}\",probe_to=~\"${destination:regex}\",node=~\"${node:regex}\"}, service)",
+        "description": "Select one or more probed ports or applications.",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Service",
+        "multi": true,
+        "name": "service",
+        "options": [],
+        "query": {
+          "query": "label_values(probe_success{job=\"blackbox\",probe_from=~\"${source:regex}\",probe_to=~\"${destination:regex}\",node=~\"${node:regex}\"}, service)",
+          "refId": "PrometheusVariableQueryEditor-Service"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Network - Availability",
+  "uid": "network-availability",
+  "version": 1
+}
