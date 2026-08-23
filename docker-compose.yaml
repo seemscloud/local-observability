@@ -204,6 +204,7 @@ services:
       observability-portainer-agent:
         condition: service_started
     environment:
+      PORTAINER_LOCAL_NAME: ${OBSERVABILITY_HOST:?set OBSERVABILITY_HOST}
       PORTAINER_PEER_NAME: ${PORTAINER_PEER_NAME:?set PORTAINER_PEER_NAME}
       PORTAINER_PEER_URL: tcp://${REMOTE_OBSERVABILITY_ADDRESS:?set REMOTE_OBSERVABILITY_ADDRESS}:9001
       PORTAINER_URL: https://observability-portainer:9443
