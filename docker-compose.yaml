@@ -127,6 +127,34 @@ services:
       - observability
     logging: *default-logging
 
+  observability-portainer:
+    image: portainer/portainer-ce:2.39.6-alpine
+    container_name: observability-portainer
+    hostname: observability-portainer
+    command:
+      - --host=unix:///var/run/docker.sock
+      - --admin-password-file=/run/secrets/portainer-admin-password
+      - --trusted-origins=${PORTAINER_DOMAIN:?set PORTAINER_DOMAIN}
+    init: true
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    expose:
+      - "9443"
+    secrets:
+      - source: portainer-admin-password
+        target: portainer-admin-password
+        mode: 0400
+      - source: portainer-encryption-key
+        target: portainer
+        mode: 0400
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - observability-portainer-data:/data
+    networks:
+      - observability
+    logging: *default-logging
+
   observability-prometheus:
     image: prom/prometheus:v3.12.0
     container_name: observability-prometheus
@@ -246,6 +274,7 @@ services:
       CLOUDFLARE_PROPAGATION_SECONDS: ${CLOUDFLARE_PROPAGATION_SECONDS:-60}
       GRAFANA_DOMAIN: ${GRAFANA_DOMAIN:?set GRAFANA_DOMAIN}
       COCKPIT_DOMAIN: ${COCKPIT_DOMAIN:?set COCKPIT_DOMAIN}
+      PORTAINER_DOMAIN: ${PORTAINER_DOMAIN:?set PORTAINER_DOMAIN}
       PROMETHEUS_DOMAIN: ${PROMETHEUS_DOMAIN:?set PROMETHEUS_DOMAIN}
       LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL:?set LETSENCRYPT_EMAIL}
     secrets:
@@ -276,11 +305,14 @@ services:
         condition: service_started
       observability-cockpit:
         condition: service_started
+      observability-portainer:
+        condition: service_started
       observability-prometheus:
         condition: service_started
     environment:
       COCKPIT_DOMAIN: ${COCKPIT_DOMAIN:?set COCKPIT_DOMAIN}
       GRAFANA_DOMAIN: ${GRAFANA_DOMAIN:?set GRAFANA_DOMAIN}
+      PORTAINER_DOMAIN: ${PORTAINER_DOMAIN:?set PORTAINER_DOMAIN}
       PROMETHEUS_DOMAIN: ${PROMETHEUS_DOMAIN:?set PROMETHEUS_DOMAIN}
     ports:
       - "80:80"
@@ -317,6 +349,7 @@ services:
       CLOUDFLARE_PROPAGATION_SECONDS: ${CLOUDFLARE_PROPAGATION_SECONDS:-60}
       GRAFANA_DOMAIN: ${GRAFANA_DOMAIN:?set GRAFANA_DOMAIN}
       COCKPIT_DOMAIN: ${COCKPIT_DOMAIN:?set COCKPIT_DOMAIN}
+      PORTAINER_DOMAIN: ${PORTAINER_DOMAIN:?set PORTAINER_DOMAIN}
       PROMETHEUS_DOMAIN: ${PROMETHEUS_DOMAIN:?set PROMETHEUS_DOMAIN}
       LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL:?set LETSENCRYPT_EMAIL}
       NGINX_PID_FILE: /var/run/nginx/nginx.pid
@@ -352,6 +385,8 @@ volumes:
     name: observability-loki-data
   observability-prometheus-data:
     name: observability-prometheus-data
+  observability-portainer-data:
+    name: observability-portainer-data
   observability-grafana-data:
     name: observability-grafana-data
   observability-nginx-run:
@@ -362,5 +397,9 @@ secrets:
     file: .cockpit/id_ed25519
   cockpit-ssh-known-hosts:
     file: .cockpit/known_hosts
+  portainer-admin-password:
+    file: .portainer/admin-password
+  portainer-encryption-key:
+    file: .portainer/encryption-key
   cloudflare-api-token:
     file: .env

@@ -1,4 +1,5 @@
 .env
 .cockpit/
+.portainer/
 __pycache__/
 *.py[cod]

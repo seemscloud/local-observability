@@ -1,6 +1,6 @@
 # local-observability
 
-Portable Docker Compose logging, metrics, availability, and host-management stack for the Faszyn or Szew NUC. It runs Grafana Alloy, Loki, Prometheus, node_exporter, smartctl_exporter, Blackbox Exporter, Cockpit, Grafana, Nginx, and Certbot on the `observability` network.
+Portable Docker Compose logging, metrics, availability, host-management, and Docker-management stack for the Faszyn or Szew NUC. It runs Grafana Alloy, Loki, Prometheus, node_exporter, smartctl_exporter, Blackbox Exporter, Cockpit, Portainer CE, Grafana, Nginx, and Certbot on the `observability` network.
 
 Alloy collects the host systemd journal, current text logs under `/var/log`, and Docker container logs. File collection starts at the end of existing files on first deployment, then persists offsets in the Alloy data volume.
 
@@ -30,7 +30,9 @@ docker compose --env-file .env.faszyn up -d
 docker compose --env-file .env.szew up -d
 ```
 
-The site files configure `grafana.<site>.lan.bajojajo.com`, `prometheus.<site>.lan.bajojajo.com`, and `cockpit.<site>.lan.bajojajo.com`. The corresponding DNS records must point to the NUC before browser access works.
+The site files configure `grafana.<site>.lan.bajojajo.com`, `prometheus.<site>.lan.bajojajo.com`, `cockpit.<site>.lan.bajojajo.com`, and `portainer.<site>.lan.bajojajo.com`. The corresponding DNS records must point to the NUC before browser access works.
+
+Each NUC runs its own Portainer CE instance against the local Docker socket. Portainer data is retained in `observability-portainer-data`; its internal HTTPS port `9443` is not published. Create the ignored `.portainer/admin-password` and `.portainer/encryption-key` files with mode `0600` before first deployment. Portainer uses them to initialize the built-in `admin` account and encrypted database on an empty data volume.
 
 Cockpit runs without a browser-visible login screen. Nginx transparently creates or reuses the browser's Cockpit session with a fixed `comp` identity, while the unprivileged bastion authenticates each independent session to its local Docker host with the ignored `.cockpit/id_ed25519` key and `.cockpit/known_hosts`. Install `cockpit-bridge`, `cockpit-system`, `cockpit-storaged`, `cockpit-networkmanager`, and `cockpit-packagekit` on each Ubuntu NUC, authorize the generated public key for `comp`, and keep the native `cockpit.socket` disabled. Cockpit port `9090` remains internal and the only browser endpoint is the trusted Nginx proxy on the private network.
 
@@ -78,6 +80,6 @@ The tracked site target files point Prometheus at `192.168.255.101:9100` for Fas
 
 ## Exposure and certificates
 
-Nginx publishes host ports `80` and `443`; HTTP redirects to HTTPS, while Grafana `3000`, Prometheus `9090`, and Cockpit `9090` remain internal. Alloy publishes `1514/tcp` and `1514/udp` for remote syslog from the BPI routers. Loki `3100`, node_exporter `9100`, Blackbox Exporter `9115`, and smartctl_exporter `9633` bind only to the site's private LAN address for Mesh access. Certbot uses Cloudflare DNS-01 to maintain one trusted certificate containing Grafana, Prometheus, and Cockpit SANs, checks every 12 hours, renews when at most three days remain, and reloads only Nginx.
+Nginx publishes host ports `80` and `443`; HTTP redirects to HTTPS, while Grafana `3000`, Prometheus `9090`, Cockpit `9090`, and Portainer `9443` remain internal. Alloy publishes `1514/tcp` and `1514/udp` for remote syslog from the BPI routers. Loki `3100`, node_exporter `9100`, Blackbox Exporter `9115`, and smartctl_exporter `9633` bind only to the site's private LAN address for Mesh access. Certbot uses Cloudflare DNS-01 to maintain one trusted certificate containing Grafana, Prometheus, Cockpit, and Portainer SANs, checks every 12 hours, renews when at most three days remain, and reloads only Nginx.
 
 Nginx injects a fixed auth-proxy identity for Grafana's built-in server administrator, so browser access has full Grafana Admin permissions without a login form. Grafana port `3000` remains internal and anonymous authentication is disabled; do not expose this stack outside a trusted private network.

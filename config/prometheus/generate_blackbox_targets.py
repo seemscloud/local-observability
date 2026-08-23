@@ -16,6 +16,7 @@ SITES = {
         "grafana": "grafana.faszyn.lan.bajojajo.com",
         "prometheus": "prometheus.faszyn.lan.bajojajo.com",
         "cockpit": "cockpit.faszyn.lan.bajojajo.com",
+        "portainer": "portainer.faszyn.lan.bajojajo.com",
         "bpi_domain": "bpi.faszyn.lan.bajojajo.com",
     },
     "szew": {
@@ -27,6 +28,7 @@ SITES = {
         "grafana": "grafana.szew.lan.bajojajo.com",
         "prometheus": "prometheus.szew.lan.bajojajo.com",
         "cockpit": "cockpit.szew.lan.bajojajo.com",
+        "portainer": "portainer.szew.lan.bajojajo.com",
         "bpi_domain": "bpi.szew.lan.bajojajo.com",
     },
 }
@@ -108,7 +110,7 @@ def build_targets() -> list[dict[str, object]]:
                         **common,
                     )
                 )
-            for application in ("grafana", "prometheus", "cockpit"):
+            for application in ("grafana", "prometheus", "cockpit", "portainer"):
                 path = "/healthz" if application == "cockpit" else "/"
                 groups.append(
                     target_group(

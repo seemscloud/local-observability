@@ -169,6 +169,20 @@
   },
   {
     "targets": [
+      "https://portainer.faszyn.lan.bajojajo.com/"
+    ],
+    "labels": {
+      "module": "http_2xx_ipv4",
+      "node": "faszyn-nuc",
+      "probe_from": "faszyn",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "https",
+      "service": "portainer-https"
+    }
+  },
+  {
+    "targets": [
       "192.168.255.101"
     ],
     "labels": {
@@ -435,6 +449,20 @@
   },
   {
     "targets": [
+      "https://portainer.szew.lan.bajojajo.com/"
+    ],
+    "labels": {
+      "module": "http_2xx_ipv4",
+      "node": "szew-nuc",
+      "probe_from": "faszyn",
+      "probe_to": "szew",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "https",
+      "service": "portainer-https"
+    }
+  },
+  {
+    "targets": [
       "192.168.254.101:22"
     ],
     "labels": {
@@ -683,6 +711,20 @@
       "prober_address": "192.168.254.11:9115",
       "protocol": "https",
       "service": "cockpit-https"
+    }
+  },
+  {
+    "targets": [
+      "https://portainer.faszyn.lan.bajojajo.com/"
+    ],
+    "labels": {
+      "module": "http_2xx_ipv4",
+      "node": "faszyn-nuc",
+      "probe_from": "szew",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "https",
+      "service": "portainer-https"
     }
   },
   {
@@ -949,6 +991,20 @@
       "prober_address": "192.168.254.11:9115",
       "protocol": "https",
       "service": "cockpit-https"
+    }
+  },
+  {
+    "targets": [
+      "https://portainer.szew.lan.bajojajo.com/"
+    ],
+    "labels": {
+      "module": "http_2xx_ipv4",
+      "node": "szew-nuc",
+      "probe_from": "szew",
+      "probe_to": "szew",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "https",
+      "service": "portainer-https"
     }
   },
   {

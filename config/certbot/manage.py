@@ -129,6 +129,7 @@ def ensure_certificate() -> bool:
                 required_env("GRAFANA_DOMAIN"),
                 required_env("PROMETHEUS_DOMAIN"),
                 required_env("COCKPIT_DOMAIN"),
+                required_env("PORTAINER_DOMAIN"),
             )
         )
     )
