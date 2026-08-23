@@ -34,7 +34,7 @@ The site files configure `grafana.<site>.lan.bajojajo.com`, `prometheus.<site>.l
 
 Cockpit runs without a browser-visible login screen. Nginx transparently creates or reuses the browser's Cockpit session with a fixed `comp` identity, while the unprivileged bastion authenticates each independent session to its local Docker host with the ignored `.cockpit/id_ed25519` key and `.cockpit/known_hosts`. Install `cockpit-bridge`, `cockpit-system`, `cockpit-storaged`, `cockpit-networkmanager`, and `cockpit-packagekit` on each Ubuntu NUC, authorize the generated public key for `comp`, and keep the native `cockpit.socket` disabled. Cockpit port `9090` remains internal and the only browser endpoint is the trusted Nginx proxy on the private network.
 
-Install `ops/cockpit-packagekit.rules` as `/etc/polkit-1/rules.d/49-observability-cockpit-packagekit.rules` with mode `0644`. It authorizes the trusted `comp` session for the PackageKit Polkit action namespace so Cockpit can refresh sources, download packages, and apply updates without requesting a password that the key-only browser session does not have.
+Run `sudo ./ops/setup-cockpit-packagekit.sh` on each NUC. It installs the scoped PackageKit Polkit rule and configures the official Ubuntu/Cockpit `pk-online` dummy-interface workaround while leaving all real interfaces unmanaged by NetworkManager. The dummy default route uses metric `32767`, so the real networkd route remains authoritative. Together these settings let Cockpit refresh sources, download packages, and apply updates without requesting a password that the key-only browser session does not have or incorrectly treating the NUC as offline.
 
 ## Cloudflare Mesh
 
