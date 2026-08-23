@@ -37,6 +37,7 @@ NUC_TCP_SERVICES = {
     22: "ssh-nuc",
     80: "nginx-http",
     443: "nginx-https",
+    9001: "portainer-agent",
     1514: "syslog-tcp",
     3100: "loki",
     9100: "node-exporter",

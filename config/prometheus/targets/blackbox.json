@@ -57,6 +57,20 @@
   },
   {
     "targets": [
+      "192.168.255.11:9001"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "faszyn-nuc",
+      "probe_from": "faszyn",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "tcp",
+      "service": "portainer-agent"
+    }
+  },
+  {
+    "targets": [
       "192.168.255.11:1514"
     ],
     "labels": {
@@ -337,6 +351,20 @@
   },
   {
     "targets": [
+      "192.168.254.11:9001"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "szew-nuc",
+      "probe_from": "faszyn",
+      "probe_to": "szew",
+      "prober_address": "192.168.255.11:9115",
+      "protocol": "tcp",
+      "service": "portainer-agent"
+    }
+  },
+  {
+    "targets": [
       "192.168.254.11:1514"
     ],
     "labels": {
@@ -599,6 +627,20 @@
       "prober_address": "192.168.254.11:9115",
       "protocol": "tcp",
       "service": "nginx-https"
+    }
+  },
+  {
+    "targets": [
+      "192.168.255.11:9001"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "faszyn-nuc",
+      "probe_from": "szew",
+      "probe_to": "faszyn",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "tcp",
+      "service": "portainer-agent"
     }
   },
   {
@@ -879,6 +921,20 @@
       "prober_address": "192.168.254.11:9115",
       "protocol": "tcp",
       "service": "nginx-https"
+    }
+  },
+  {
+    "targets": [
+      "192.168.254.11:9001"
+    ],
+    "labels": {
+      "module": "tcp_connect_ipv4",
+      "node": "szew-nuc",
+      "probe_from": "szew",
+      "probe_to": "szew",
+      "prober_address": "192.168.254.11:9115",
+      "protocol": "tcp",
+      "service": "portainer-agent"
     }
   },
   {

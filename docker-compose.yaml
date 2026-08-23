@@ -131,6 +131,8 @@ services:
     image: portainer/portainer-ce:2.39.6-alpine
     container_name: observability-portainer
     hostname: observability-portainer
+    entrypoint:
+      - /usr/local/bin/portainer-start
     command:
       - --host=unix:///var/run/docker.sock
       - --admin-password-file=/run/secrets/portainer-admin-password
@@ -148,9 +150,69 @@ services:
       - source: portainer-encryption-key
         target: portainer
         mode: 0400
+      - source: portainer-agent-secret
+        target: portainer-agent-secret
+        mode: 0400
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - observability-portainer-data:/data
+      - ./ops/portainer-start.sh:/usr/local/bin/portainer-start:ro
+    networks:
+      - observability
+    logging: *default-logging
+
+  observability-portainer-agent:
+    image: portainer/agent:2.39.6-alpine
+    container_name: observability-portainer-agent
+    hostname: observability-portainer-agent
+    entrypoint:
+      - /usr/local/bin/portainer-agent-start
+    init: true
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    expose:
+      - "9001"
+    ports:
+      - "${NODE_EXPORTER_LISTEN_ADDRESS:?set NODE_EXPORTER_LISTEN_ADDRESS}:9001:9001"
+    secrets:
+      - source: portainer-agent-secret
+        target: portainer-agent-secret
+        mode: 0400
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+      - ./ops/portainer-agent-start.sh:/usr/local/bin/portainer-agent-start:ro
+    networks:
+      - observability
+    logging: *default-logging
+
+  observability-portainer-peer:
+    image: python:3.14-alpine
+    container_name: observability-portainer-peer
+    hostname: observability-portainer-peer
+    entrypoint:
+      - python3
+      - /opt/portainer/peer.py
+    init: true
+    restart: "no"
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      observability-portainer:
+        condition: service_started
+      observability-portainer-agent:
+        condition: service_started
+    environment:
+      PORTAINER_PEER_NAME: ${PORTAINER_PEER_NAME:?set PORTAINER_PEER_NAME}
+      PORTAINER_PEER_URL: tcp://${REMOTE_OBSERVABILITY_ADDRESS:?set REMOTE_OBSERVABILITY_ADDRESS}:9001
+      PORTAINER_URL: https://observability-portainer:9443
+    secrets:
+      - source: portainer-admin-password
+        target: portainer-admin-password
+        mode: 0400
+    volumes:
+      - ./ops/portainer-peer.py:/opt/portainer/peer.py:ro
     networks:
       - observability
     logging: *default-logging
@@ -401,5 +463,7 @@ secrets:
     file: .portainer/admin-password
   portainer-encryption-key:
     file: .portainer/encryption-key
+  portainer-agent-secret:
+    file: .portainer/agent-secret
   cloudflare-api-token:
     file: .env
