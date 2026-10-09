@@ -8,8 +8,8 @@ from pathlib import Path
 
 SITES = {
     "faszyn": {
-        "prober": "192.168.255.11:9115",
-        "nuc_ip": "192.168.255.11",
+        "prober": "192.168.254.21:9115",
+        "nuc_ip": "192.168.254.21",
         "nuc_node": "faszyn-nuc",
         "bpi_ip": "192.168.255.101",
         "bpi_node": "faszyn-bpi-r4",

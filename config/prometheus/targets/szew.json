@@ -24,7 +24,7 @@
     }
   },
   {
-    "targets": ["192.168.255.11:9100"],
+    "targets": ["192.168.254.21:9100"],
     "labels": {
       "compute": "host",
       "node": "faszyn-nuc",
@@ -40,7 +40,7 @@
     }
   },
   {
-    "targets": ["192.168.255.11:9633"],
+    "targets": ["192.168.254.21:9633"],
     "labels": {
       "compute": "storage",
       "node": "faszyn-nuc",

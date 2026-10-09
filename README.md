@@ -4,13 +4,13 @@ Portable Docker Compose logging, metrics, availability, host-management, and Doc
 
 Alloy collects the host systemd journal, current text logs under `/var/log`, and Docker container logs. File collection starts at the end of existing files on first deployment, then persists offsets in the Alloy data volume.
 
-Prometheus scrapes both NUC node_exporters, both smartctl_exporters, and both Banana Pi BPI-R4 exporters every five seconds. Metrics are retained for 30 days in a named volume. The NUC exporter uses the host network namespace for accurate interface metrics and binds only to the private LAN address selected by the site environment. Smartctl polling runs every minute and rescans devices every five minutes. Loki and smartctl_exporter publish only on the same private LAN address so the peer site can reach them through Cloudflare Mesh; Prometheus remains internal to the Docker network.
+Prometheus scrapes both NUC node_exporters, both smartctl_exporters, and both Banana Pi BPI-R4 exporters every five seconds. Metrics are retained for 30 days in a named volume. The NUC exporter uses the host network namespace for accurate interface metrics and binds only to the private LAN address selected by the site environment. Smartctl polling runs every minute and rescans devices every five minutes. Loki and smartctl_exporter publish only on the same private LAN address so the peer site can reach them directly over the shared LAN; Prometheus remains internal to the Docker network.
 
 Each Alloy instance collects only its local host, Docker, file, journal, and OpenWrt syslog sources, then writes every stream to both Loki instances. Consequently either Grafana can query all Faszyn and Szew logs and metrics without depending on the peer Grafana or Prometheus service.
 
 Seven root-level metric dashboards separate compute, network, storage, and availability concerns for the NUC host and Banana PI R4: **Compute - Host**, **Compute - Banana PI R4**, **Network - Host**, **Network - Banana PI R4**, **Availability**, **Storage - Host**, and **Storage - Banana PI R4**. Together with **Logging - Loki**, Grafana provisions exactly eight dashboards. Host storage includes NVMe SMART health; Banana PI storage reports only the filesystem and SD-card properties actually exposed by OpenWrt because its SD media has no SMART interface. Every metric is shown as a historical time-series chart in a compact three-column layout with no current-value stat cards.
 
-Each site's Blackbox Exporter probes both its own site and the peer site, while both Prometheus instances scrape both exporters. The availability matrix covers local NUC and BPI-R4 ICMP, cross-site and local NUC ports `22`, `80`, `443`, `9001`, `1514/tcp`, `3100`, `9100`, `9115`, and `9633`, cross-site and local BPI-R4 ports `22`, `53/tcp`, `80`, `443`, and `9100`, a DNS query over UDP, and HTTPS checks for Grafana, Prometheus, Cockpit, Portainer, and LuCI. Cross-site ICMP is intentionally omitted because the Cloudflare Mesh path carries the monitored TCP/UDP traffic but not ICMP. **Availability** filters the resulting history by probe source, destination site, node, and service.
+Each site's Blackbox Exporter probes both its own site and the peer site, while both Prometheus instances scrape both exporters. The availability matrix covers local NUC and BPI-R4 ICMP, cross-site and local NUC ports `22`, `80`, `443`, `9001`, `1514/tcp`, `3100`, `9100`, `9115`, and `9633`, cross-site and local BPI-R4 ports `22`, `53/tcp`, `80`, `443`, and `9100`, a DNS query over UDP, and HTTPS checks for Grafana, Prometheus, Cockpit, Portainer, and LuCI. Cross-site ICMP is intentionally omitted to retain the existing probe matrix. **Availability** filters the resulting history by probe source, destination site, node, and service.
 
 Grafana opens the root-level provisioned **Logging - Loki** dashboard by default. A single full-width log panel has a **Type** filter with `All`, `OpenWrt`, `NUC`, `Docker`, and `Host` choices and a case-insensitive **Search** text filter, plus the dashboard time picker and automatic refresh, so reading and searching logs does not require Explore queries.
 
@@ -38,16 +38,9 @@ Cockpit runs without a browser-visible login screen. Nginx transparently creates
 
 Run `sudo ./ops/setup-cockpit-packagekit.sh` on each NUC. It installs the scoped PackageKit Polkit rule and configures the official Ubuntu/Cockpit `pk-online` dummy-interface workaround while leaving all real interfaces unmanaged by NetworkManager. The dummy default route uses metric `32767`, so the real networkd route remains authoritative. Together these settings let Cockpit refresh sources, download packages, and apply updates without requesting a password that the key-only browser session does not have or incorrectly treating the NUC as offline.
 
-## Cloudflare Mesh
+## Cloudflare Tunnel
 
-Each NUC runs the host-installed `cloudflare-warp` binary as a Cloudflare Mesh node. The WARP profile routes the two on-premise `/24` networks and Mesh CGNAT ranges through Cloudflare while `ops/cloudflare-mesh-forwarding.sh` keeps the NUC's own LAN local and allows forwarded traffic between `CloudflareWARP` and `enp86s0`. Install the script and unit as root:
-
-```bash
-install -m 0755 ops/cloudflare-mesh-forwarding.sh /usr/local/sbin/cloudflare-mesh-forwarding
-install -m 0644 ops/cloudflare-mesh-forwarding.service /etc/systemd/system/cloudflare-mesh-forwarding.service
-systemctl daemon-reload
-systemctl enable --now cloudflare-mesh-forwarding.service
-```
+Both NUCs now share `192.168.254.0/24`: Szew uses `.11` and Faszyn uses `.21`, with DHCP reservations on the router. Peer traffic stays on the LAN. A single Cloudflare Tunnel has a Docker host-network replica on each NUC for remote access. Its Terraform resources and Compose definition live in the cicd-infra Terragrunt repository (`operations/cloudflare/onprem/compose.yaml`); the runtime files are under `/opt/cloudflared`. WARP is needed on remote client devices, not on the NUCs. The former Mesh services, forwarding rules, and `.255.0/24` route are retired.
 
 ## Banana Pi BPI-R4 exporter
 
@@ -80,6 +73,6 @@ The tracked site target files point Prometheus at `192.168.255.101:9100` for Fas
 
 ## Exposure and certificates
 
-Nginx publishes host ports `80` and `443`; HTTP redirects to HTTPS, while Grafana `3000`, Prometheus `9090`, Cockpit `9090`, and Portainer `9443` remain internal. Alloy publishes `1514/tcp` and `1514/udp` for remote syslog from the BPI routers. Portainer Agent `9001`, Loki `3100`, node_exporter `9100`, Blackbox Exporter `9115`, and smartctl_exporter `9633` bind only to the site's private LAN address for Mesh access. Certbot uses Cloudflare DNS-01 to maintain one trusted certificate containing Grafana, Prometheus, Cockpit, and Portainer SANs, checks every 12 hours, renews when at most three days remain, and reloads only Nginx.
+Nginx publishes host ports `80` and `443`; HTTP redirects to HTTPS, while Grafana `3000`, Prometheus `9090`, Cockpit `9090`, and Portainer `9443` remain internal. Alloy publishes `1514/tcp` and `1514/udp` for remote syslog from the BPI routers. Portainer Agent `9001`, Loki `3100`, node_exporter `9100`, Blackbox Exporter `9115`, and smartctl_exporter `9633` bind only to the site's private LAN address for LAN and Cloudflare Tunnel access. Certbot uses Cloudflare DNS-01 to maintain one trusted certificate containing Grafana, Prometheus, Cockpit, and Portainer SANs, checks every 12 hours, renews when at most three days remain, and reloads only Nginx.
 
 Nginx injects a fixed auth-proxy identity for Grafana's built-in server administrator, so browser access has full Grafana Admin permissions without a login form. Grafana port `3000` remains internal and anonymous authentication is disabled; do not expose this stack outside a trusted private network.
